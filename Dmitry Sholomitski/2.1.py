@@ -2,7 +2,7 @@ def str_len(string):
     '''
 
     :param string: input string
-    :return: lenth
+    :return: lenth of string
     '''
     counter = 0
     for letter in string:
