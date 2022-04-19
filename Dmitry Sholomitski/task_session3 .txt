@@ -1,0 +1,33 @@
+mkdir local_repo
+cd local_repo
+git init
+touch file.txt
+git add file.txt
+git commit -m "first empty file"
+#created repository xaos613/test_repo on github
+git remote add origin git@github.com:xaos613/test_repo.git
+git branch -M master
+git push -u origin master
+git checkout -b develop
+git checkout -b dev
+nano file.txt
+Git add file.txt
+git push origin dev
+git push origin develop
+mkdir repo2
+cd repo2
+git clone git@github.com:xaos613/test_repo.git repo2
+cd repo2
+git checkout develop
+git checkout -b dev2
+nano file.txt
+git add  file.txt
+git commit -m '1st line from dev2'
+git checkout develop
+git merge dev2
+Git push
+git merge dev2
+Git push origin/dev
+nano file.txt
+git add file.txt
+git commit -b 'resolved conflict'
