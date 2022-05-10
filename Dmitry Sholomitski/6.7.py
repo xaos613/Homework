@@ -1,42 +1,80 @@
-class Pagination:
-    def __init__(self, text, symbol_nom):
-        self.text = text
-        self.symbol_nom = symbol_nom
-        self.pages = []
+'''
+Implement a class Money to represent value and currency. You need to implement methods to use all basic
+arithmetics expressions (comparison, division, multiplication, addition and subtraction).
+Tip: use class attribute exchange rate which is dictionary and stores information about exchange rates
+to your default currency:
+'''
 
-        start_index = 0
 
-        for x in range(symbol_nom, len(text), symbol_nom):
-            self.pages.append(text[start_index:x])
-            start_index = x
-        self.pages.append(text[start_index:])
-        self.page_count = len(self.pages)
-        self.item_count = len(text)
+class Money:
+    exchange_rate = {
+        "EUR": 0.93,
+        "BYN": 2.1
+    }
 
-    def count_items_on_page(self, page_index):
-        if 0 <= page_index < len(self.pages):
-            return len(self.pages[page_index])
+    def __init__(self, value, currency="USD"):
+        self.value = value
+        self.currency = currency.upper()
+
+    def __repr__(self):
+        return f'{round(self.value, 2)} {self.currency}'
+
+    def __str__(self):
+        return f'{round(self.value, 2)} {self.currency}'
+
+    def _exchange(self, value, currency):
+        if currency == 'USD':
+            return value
         else:
-            raise Exception("Invalid index. Page is missing")
+            return round(value / self.exchange_rate[currency], 2)
 
-    def find_page(self, phrase):
-        if phrase in self.text:
-            first_letter_index = self.text.find(phrase) + 1
-            last_letter_index = first_letter_index + len(phrase) - 1
-
-            return [x for x in range(first_letter_index // self.symbol_nom,
-                                     (last_letter_index - 1) // self.symbol_nom + 1)]
-
+    def _back_exchange(self, value, currency):
+        if currency == 'USD':
+            return value
         else:
-            raise Exception(f'{phrase} is missing on the page')
+            return round(value * self.exchange_rate[currency], 2)
 
-    def display_page(self, page_num):
-        return self.pages[page_num]
+    def __add__(self, other):
+        if isinstance(other, (int, float)):
+            return Money(self.value + other, self.currency)
+        elif isinstance(other, Money):
+            result_in_USD = self._exchange(self.value, self.currency) + self._exchange(other.value, other.currency)
+            return Money(self._back_exchange(result_in_USD, self.currency), self.currency)
+
+    __radd__ = __add__
+
+    def __sub__(self, other):
+        if isinstance(other, (int, float)):
+            return Money(self.value - other, self.currency)
+        elif isinstance(other, Money):
+            result_in_USD = self._exchange(self.value, self.currency) - self._exchange(other.value, other.currency)
+            return Money(self._back_exchange(result_in_USD, self.currency), self.currency)
+
+    __rsub__ = __sub__
 
 
-pages = Pagination('Your beautiful text', 5)
-print(pages.page_count)
-print(pages.count_items_on_page(3))
-# print(pages.count_items_on_page(4))
-print(pages.find_page('beautiful'))
-print(pages.display_page(2))
+
+    def __mul__(self, other):
+        if isinstance(other, (int, float)):
+            return Money(round(self.value * other, 2), self.currency)
+
+    __rmul__ = __mul__
+
+
+x = Money(10, "BYN")
+y = Money(11)  # define your own default value, e.g. “USD”
+z = Money(12.34, "EUR")
+# print(y + x)
+# print(x - 3.11)  # result in “EUR”
+# print(z)
+# print(3.11 * x)
+# print(y * 0.8)
+#
+#
+# print(z + 3.11 * x + y * 0.8) # result in “EUR”
+
+
+lst = [Money(10,"BYN"), Money(11), Money(12.01, "EUR")]
+
+s = sum(lst)
+print(s) #result in “BYN”

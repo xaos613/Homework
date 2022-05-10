@@ -1,4 +1,4 @@
-'''
+"""
 Create hierarchy out of birds. Implement 4 classes:
 
 class Bird with an attribute name and methods fly and walk.
@@ -10,13 +10,11 @@ without attribute fly. Add same "eat" method but with other
 implementation regarding the swimming bird tastes.
 class SuperBird which can do all of it: walk, fly, swim and eat.
 But be careful which "eat" method you inherit.
-'''
-
-
+"""
 
 
 class Bird:
-    def __init__(self, name, ration ='grains'):
+    def __init__(self, name, ration='grains'):
         self.name = name
         self.ration = ration
 
@@ -29,8 +27,9 @@ class Bird:
     def eat(self):
         print(f"It eats mostly {self.ration}")
 
+
 class FlyingBird(Bird):
-    def __init__(self, name, ration = "grains"):
+    def __init__(self, name, ration="grains"):
         super().__init__(name)
         self.ration = ration
 
@@ -40,9 +39,8 @@ class FlyingBird(Bird):
 
 class NonFlyingBird(Bird):
 
-
     def __init__(self, name, ration="fish"):
-        super().__init__(name,ration)
+        super().__init__(name, ration)
 
     def swim(self):
         print(f'{self.name} bird can swim')
@@ -50,8 +48,9 @@ class NonFlyingBird(Bird):
     def fly(self):
         print("AttributeError: 'Penguin' object has no attribute 'fly'")
 
+
 def __str__(self):
-        return str(f"{self.name} can walk and swim.")
+    return str(f"{self.name} can walk and swim.")
 
 
 class SuperBird(NonFlyingBird, FlyingBird):
@@ -59,13 +58,11 @@ class SuperBird(NonFlyingBird, FlyingBird):
     def __init__(self, name, ration="fish"):
         super().__init__(name, ration)
 
-
     def __str__(self):
         return str(f"{self.name} can walk, fly and swim")
 
     def eat(self):
         print(f"{self.name} bird eats mostly {self.ration}")
-
 
 
 b = Bird("Any")
@@ -90,11 +87,6 @@ s = SuperBird("Gull")
 g = SuperBird("Gull")
 print(str(s))
 # print("Gull bird can walk, swim and fly-----")
-tt = s.eat()
-
-rr = s.eat()
 print("It eats fish")
 
 print(SuperBird.__mro__)
-
-
