@@ -1,3 +1,6 @@
+import math
+
+
 class Pagination:
     def __init__(self, text, symbol_nom):
         self.text = text
@@ -24,8 +27,8 @@ class Pagination:
             first_letter_index = self.text.find(phrase) + 1
             last_letter_index = first_letter_index + len(phrase) - 1
 
-            return [x for x in range(first_letter_index // self.symbol_nom,
-                                     (last_letter_index - 1) // self.symbol_nom + 1)]
+            return [x for x in range(math.ceil(first_letter_index // self.symbol_nom),
+                                     math.ceil((last_letter_index // self.symbol_nom + 1)))]
 
         else:
             raise Exception(f'{phrase} is missing on the page')
