@@ -10,7 +10,7 @@ class Counter():
         if self.start <= self.stop:
             self.start += 1
         else:
-            print("Maximal value is reached.")
+            raise Exception("Maximal value is reached.")
 
 
     def get(self):
