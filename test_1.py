@@ -1,7 +1,7 @@
 from unittest import TestCase, main
 from unittest.mock import patch
 
-import mock
+import unittest.mock
 
 import task
 
@@ -41,15 +41,15 @@ class Test_Goldbach(TestCase):
         self.assertEqual(str(task.CustomException()), '')
 
     def test_input(self):
-        with mock.patch('builtins.input', return_value="6"):
+        with unittest.mock.patch('builtins.input', return_value="6"):
             assert task.get_input() == '6'
-        with mock.patch('builtins.input', return_value="t"):
+        with unittest.mock.patch('builtins.input', return_value="t"):
             assert task.get_input() == 't'
-        with mock.patch('builtins.input', return_value="q"):
+        with unittest.mock.patch('builtins.input', return_value="q"):
             self.assertRaises(SystemExit)
-        with mock.patch('builtins.input', return_value=""):
+        with unittest.mock.patch('builtins.input', return_value=""):
             self.assertRaises(task.EmptyException)
-        with mock.patch('builtins.input', return_value="bbb"):
+        with unittest.mock.patch('builtins.input', return_value="bbb"):
             self.assertRaises(task.TypeException)
 
     @patch('task.chckerfunc')
