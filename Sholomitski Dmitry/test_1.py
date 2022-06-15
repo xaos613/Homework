@@ -8,7 +8,7 @@ import task
 
 class Test_Goldbach(TestCase):
 
-    def test_is_even(self):
+    def test_chckerfunc(self):
         self.assertEqual(task.chckerfunc(4), 4)
         self.assertEqual(task.chckerfunc(8), 8)
         with self.assertRaises(task.EmptyException):
@@ -25,6 +25,7 @@ class Test_Goldbach(TestCase):
             task.chckerfunc(3)
         with self.assertRaises(task.ValueException):
             task.chckerfunc(-3)
+
 
     def test_goldbach(self):
         with self.assertRaises(task.ValueException):
