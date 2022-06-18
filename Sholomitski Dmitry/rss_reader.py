@@ -1,24 +1,3 @@
-'''
-валидация URL
-
-
-ПЕРЕДЕЛАТЬ СЛОВАРЬ объектов
-добавить заголовки в requests
-
-отделить requests
-
-
-выводл только первого заголовка канала
-
-
-
-
-
-
-
-
-
-'''
 import html
 import json
 import re
@@ -33,8 +12,8 @@ from settings import logger_info
 class RSSParser:
     def __init__(self, settings):
         self.settings = settings
-        self.news_dict = RSSParser.parser(settings['source'])
-        self.rss_print(settings['limit'])
+        self.news_dict = RSSParser.parser(self.settings['source'])
+        self.rss_print(self.settings['limit'])
 
     @staticmethod
     def convert_to_text_format(dict_for_print: dict):
@@ -50,31 +29,43 @@ class RSSParser:
 
     @staticmethod
     def time_parser(date):
-        '''
+        """
         принимает дату возвращает в одном формате
 
         :param date: дата из å любом формате
         :return: дата в формате '%Y-%m-%d %H:%M:%S'
-        '''
+        """
         converted_date = parse(date).strftime('%Y-%m-%d %H:%M:%S')
         return converted_date
 
     @staticmethod
     def text_cleaner(string):
-        '''
+        """
         очищает строку от ненужных символов
 
         :param string: virgin string
         :return: clean string
-        '''
+        """
         string = re.sub('<[^<]+>', '', html.unescape(string))
         string = re.sub('\xa0', ' ', string).strip()
         return string
 
     @staticmethod
     def url_request(url):
-        response = requests.get(url)
-        rss_content = response.content
+        headers_dict = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                                      'Chrome/102.0.5005.62 Safari/537.36',
+                        'Accept': 'text/html,application/xhtml+xml,application/xml;'
+                                  'q=0.9,image/avif,image/webp,image/apng,*/*;'
+                                  'q=0.8,application/signed-exchange;v=b3;q=0.9',
+                        }
+
+        logger_info.info(f'Making a request to {url} ')
+
+        with requests.get(url, headers=headers_dict) as response:
+            logger_info.info('Connected to URL, reading data')
+            rss_content = response.content
+
+        logger_info.info('Rss data successfully decoded')
 
         return rss_content
 
@@ -82,7 +73,7 @@ class RSSParser:
     def parser(rss_url):
 
         rss_content = RSSParser.url_request(rss_url)
-
+        logger_info.info(f'Fetching RSS')
         soup = BeautifulSoup(rss_content, 'xml')
 
         chanel_title = soup.find("title").text
@@ -96,19 +87,19 @@ class RSSParser:
         for item in soup.find_all('item'):
 
             item_title = RSSParser.text_cleaner(
-                item.title.text) if item.text != None else 'Title not provided'
+                item.title.text) if item.text is not None else 'Title not provided'
             item_pubdate = RSSParser.time_parser(
-                item.pubDate.text) if item.pubDate != None else 'Date is not provided'
+                item.pubDate.text) if item.pubDate is not None else 'Date is not provided'
             item_description = RSSParser.text_cleaner(
-                item.description.text) if item.description != None else 'Description not provided'
-            item_link = item.link.text if item.link != None else 'link is not provided'
+                item.description.text) if item.description is not None else 'Description not provided'
+            item_link = item.link.text if item.link is not None else 'link is not provided'
 
             image_template = ('media:content', 'media:thumbnail', 'enclosure', "image")
 
             for template in image_template:
-                if item.find(template) != None:
+                if item.find(template) is not None:
 
-                    if item.find(template).get("url") != None:
+                    if item.find(template).get("url") is not None:
                         item_image = item.find(template).get("url")
                     elif item.find(template).text != '':
                         item_image = item.find(template).text
@@ -134,24 +125,24 @@ class RSSParser:
 
         if self.settings['json']:
             for item in items_for_print:
-                json_formatted_text = json.dumps(self.news_dict[self.settings['source']][item], indent=4, ensure_ascii=False)
+                json_formatted_text = json.dumps(self.news_dict[self.settings['source']][item], indent=4,
+                                                 ensure_ascii=False)
                 print(json_formatted_text)
         else:
             feed_title = self.news_dict[self.settings['source']][items_for_print[0]]['chanel_title']
             chanel_link = self.news_dict[self.settings['source']][items_for_print[0]]['chanel_link']
             print(feed_title, chanel_link, '=' * 120, sep='\n')
 
-
             for item in items_for_print:
                 print(RSSParser.convert_to_text_format(self.news_dict[settings['source']][item]))
-                print('-'* 120)
+                print('-' * 120)
 
 
 if __name__ == '__main__':
     # settings = check_args()
 
     settings = {
-        'limit': 2,
+        'limit': 1,
         'json': True,
         'verbose': True,
         'source': 'https://money.onliner.by/feed'
