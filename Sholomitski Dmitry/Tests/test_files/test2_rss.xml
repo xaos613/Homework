@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+<title>Политика — Рамблер/новости</title>
+<link>https://news.rambler.ru</link>
+<description>Последние новости политики на сегодня в России и мире</description>
+<language>ru</language>
+<image>
+<url>/static/news/i/favicon-news/favicon-96x96.png</url>
+<title>Рамблер/новости</title>
+<link>https://news.rambler.ru</link>
+</image>
+<item>
+<guid isPermaLink="False">48853823</guid>
+<title>В Совфеде отреагировали на сдачу в плен командира украинского батальона «Айдар»</title>
+<link>https://news.rambler.ru/politics/48853823-v-sovfede-otreagirovali-na-sdachu-v-plen-komandira-ukrainskogo-batalona-aydar/</link>
+<pdalink>https://news.rambler.ru/politics/48853823-v-sovfede-otreagirovali-na-sdachu-v-plen-komandira-ukrainskogo-batalona-aydar/</pdalink>
+<pubDate>Sun, 19 Jun 2022 14:46:35 +0300</pubDate>
+<description>Когда начинают сдаваться представители элитных частей Вооруженные сил Украины (ВСУ), то можно сделать вывод, что боевой дух украинской армии значительно снижен из-за успехов российской армии и сил Народной милиции Донецкой…</description>
+<category>Политика</category>
+<author>Lenta.ru</author>
+</item>
+<item>
+<guid isPermaLink="False">48853898</guid>
+<title>«Газ не пахнет?»: в Совфеде раскритиковали Санду за запрет новостей из РФ</title>
+<link>https://news.rambler.ru/politics/48853898-gaz-ne-pahnet-v-sovfede-raskritikovali-sandu-za-zapret-novostey-iz-rf/</link>
+<pdalink>https://news.rambler.ru/politics/48853898-gaz-ne-pahnet-v-sovfede-raskritikovali-sandu-za-zapret-novostey-iz-rf/</pdalink>
+<pubDate>Sun, 19 Jun 2022 14:26:56 +0300</pubDate>
+<description>Первый заместитель председателя комитета Совета Федерации по международным делам Владимир Джабаров в своем Telegram-канале президента Молдавии Майю Санду. Его возмущение вызвал запрет в стране российских новостей.</description>
+<category>Политика</category>
+<author>Рамблер</author>
+</item>
+</channel>
+</rss>
