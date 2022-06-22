@@ -1,22 +1,19 @@
-'''
-посмореть как отключается verbose
-помотриеть названия ошибок
-
-'''
-from audioop import reverse
-
-import rss_exceptions
+"""
+написать тестовые можели для  всех вариантов RSS
+написать тесты для json
+"""
 
 
 import html
 import json
 import re
+from urllib.parse import urlparse
 
 import requests
 from bs4 import BeautifulSoup
 from dateparser import parse
-from urllib.parse import urlparse
 
+import rss_exceptions
 from settings import logger_info, check_args
 
 
@@ -25,20 +22,30 @@ class RSSParser:
         self.settings = settings
         self.rss_content = self.url_request(settings['source'])
         self.list_of_items = self.parser(self.rss_content)
-        self.rss_print(self.list_of_items, self.settings['limit'])
+        items_for_print = sorted(self.list_of_items, key=lambda x: x['item_pubdate'], reverse=True)[:settings['limit']]
 
+        if self.settings['json']:
+            RSSParser.json_print(items_for_print)
+        else:
+            RSSParser.rss_print(items_for_print)
 
     @staticmethod
     def convert_to_text_format(dict_for_print: dict):
+        #
+        # return "".join(
+        #     [f"Title: {dict_for_print['item_title']}\n"
+        #      f"Description: {dict_for_print['item_description']}\n"
+        #      f"Published: {dict_for_print['item_pubdate']}\n"
+        #      f"Image: {dict_for_print['item_image']}\n"
+        #      f"Read more: {dict_for_print['item_link']}\n"
+        #      ]
+        # )
 
-        return "".join(
-            [f"Title: {dict_for_print['item_title']}\n"
-             f"Description: {dict_for_print['item_description']}\n"
-             f"Published: {dict_for_print['item_pubdate']}\n"
-             f"Image: {dict_for_print['item_image']}\n"
-             f"Read more: {dict_for_print['item_link']}\n"
-             ]
-        )
+        print(f"Title: {dict_for_print['item_title']}")
+        print(f"Description: {dict_for_print['item_description']}")
+        print(f"Published: {dict_for_print['item_pubdate']}")
+        print(f"Image: {dict_for_print['item_image']}")
+        print(f"Read more: {dict_for_print['item_link']}")
 
     @staticmethod
     def time_parser(date):
@@ -56,7 +63,7 @@ class RSSParser:
             raise rss_exceptions.DateTimeError(f'unsupported pubDate format in feed')
 
     @staticmethod
-    def check_url(url= '') -> bool:
+    def check_url(url='') -> bool:
 
         logger_info.info(f'Validating URL: {url}')
         url = url.strip()
@@ -100,28 +107,28 @@ class RSSParser:
 
         return rss_content
 
-    def rss_print(self, list_of_items, limit=None):
+    @staticmethod
+    def rss_print(items_for_print):
         logger_info.info(f' printing in needed format')
 
-        items_for_print = sorted(list_of_items, key=lambda x: x['item_pubdate'], reverse =True)[:limit]
+        print_header = True
 
-        if self.settings['json']:
-            for item in items_for_print:
-                json_formatted_text = json.dumps(item, indent=4, ensure_ascii=False)
-                print(json_formatted_text)
-        else:
-            items_for_print = sorted(items_for_print, key=lambda x: x['chanel_title'])
+        for number_item in range(len(items_for_print)):
+            if items_for_print[number_item]['chanel_title'] != items_for_print[number_item - 1]['chanel_title']:
+                print_header = True
+            if print_header:
+                print(items_for_print[number_item]['chanel_title'])
+                print(items_for_print[number_item]['chanel_link'])
+                print('=' * 120)
+                print_header = False
+            print(RSSParser.convert_to_text_format(items_for_print[number_item]))
+            print('-' * 120)
 
-            print_header = True
-
-            for number_item in range(len(items_for_print)):
-                if items_for_print[number_item]['chanel_title'] != items_for_print[number_item-1]['chanel_title']:
-                    print_header = True
-                if print_header:
-                    print(items_for_print[number_item]['chanel_title'], items_for_print[number_item]['chanel_link'], '=' * 120, sep='\n')
-                    print_header= False
-                print(RSSParser.convert_to_text_format(items_for_print[number_item]))
-                print('-' * 120)
+    @staticmethod
+    def json_print(items_for_print):
+        for item in items_for_print:
+            json_formatted_text = json.dumps(item, indent=4, ensure_ascii=False)
+            print(json_formatted_text)
 
     def parser(self, rss_content):
         list_of_items = []
@@ -175,13 +182,5 @@ class RSSParser:
 
 
 if __name__ == '__main__':
-
-
-    # settings = check_args()
-    settings = {
-        'limit': 4,
-        'json': False,
-        'verbose': False,
-        'source': 'https://cdn.feedcontrol.net/8/1114-wioSIX3uu8MEj.xml'
-    }
+    settings = check_args()
     RSSParser(settings)

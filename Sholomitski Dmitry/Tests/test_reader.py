@@ -1,17 +1,13 @@
-from unittest import TestCase, main
-from unittest.mock import Mock, patch, MagicMock
-
-import settings
 import json
+from unittest import TestCase, main
+from unittest.mock import patch, call
 
-from rss_reader import RSSParser
 import rss_exceptions
+import settings
+from rss_reader import RSSParser
 
 
-
-class  TestRSSParser(TestCase):
-
-
+class TestRSSParser(TestCase):
     settings = {
         'limit': 1,
         'json': False,
@@ -33,8 +29,6 @@ class  TestRSSParser(TestCase):
         self.assertEqual(
             RSSParser.text_cleaner('<p><strong>May 25,\xa02022</strong> – In its ... shortage.</p>'),
             'May 25, 2022 – In its ... shortage.')
-
-
 
     def test_unify_pubdate(self):
         """
@@ -66,14 +60,7 @@ class  TestRSSParser(TestCase):
         with self.assertRaises(rss_exceptions.EmptyUrlError):
             RSSParser.check_url(' ')
 
-    def test_convert_to_text_format(self):
-        with open('test_files/conv_dict.txt') as inp_file, open('test_files/conv_dict_res.txt') as out_file:
-            in_data = json.load(inp_file)
-            out_data = out_file.read()
-            self.assertEqual(RSSParser.convert_to_text_format(in_data),out_data)
-
     def test_parse_args(self):
-
         parser = settings.get_args(['--limit', '3', '--verbose', '--json', 'https://money.onliner.by/feed'])
         self.assertTrue(parser.limit)
         self.assertTrue(parser.verbose)
@@ -86,46 +73,42 @@ class  TestRSSParser(TestCase):
 
     def test_check_args(self):
         parser = settings.check_args(['--limit', '3', '--verbose', '--json', 'https://money.onliner.by/feed'])
-        self.assertEqual(parser['limit'],3)
-        self.assertEqual(parser['source'],'https://money.onliner.by/feed')
+        self.assertEqual(parser['limit'], 3)
+        self.assertEqual(parser['source'], 'https://money.onliner.by/feed')
         self.assertTrue(parser['verbose'])
         self.assertTrue(parser['json'])
 
-
-    @patch.object(RSSParser,'url_request')
+    @patch.object(RSSParser, 'url_request')
     def test_parser_mock(self, mock_url_request):
-
         with open('test_files/text1_rss.xml', 'rb') as xlm_file1, open('test_files/test1_rss.txt') as res_file1:
-            test1_file_rss =xlm_file1.read()
-            test1_file_result = res_file1.read()
-
-
+            test1_file_rss = xlm_file1.read()
+            test1_file_result = eval(res_file1.read())
             mock_url_request.return_value = test1_file_rss
-            # ТУТ СТРОКОВОЕ ПРЕДСТАВЛЕНИЕ
-            #
-            self.assertEqual(str(RSSParser.parser(self,mock_url_request())), test1_file_result)
-
-    # @patch.object(RSSParser, 'rss_print')
-    # def test_rss_print_mock(self, mock_url_request):
-    #
-    #     with open('test_files/text1_rss.xml', 'rb') as xlm_file1, open('test_files/test1_rss.txt') as res_file1:
-    #         test1_file_rss =xlm_file1.read()
-    #         test1_file_result = res_file1.read()
-    #
-    #
-    #         mock_url_request.return_value = test1_file_rss
-    #
-    #
-    #         mock_resut = RSSParser.rss_print(self, mock_url_request())
-    #
-    #
-    #
-    #         self.assertEqual((mock_resut), test1_file_result)
+            self.assertEqual(RSSParser.parser(self, mock_url_request()), test1_file_result)
 
 
+    @patch('builtins.print')
+    def test_rss_print(self, mock_print):
+        with open('test_files/test_print1.txt', 'r') as rss_file1:
+            list_of_items = eval(rss_file1.read())
+
+
+            RSSParser.rss_print(list_of_items)
+
+            self.assertEqual(mock_print.mock_calls, [
+                call('Yahoo News - Latest News & Headlines'),
+                 call('https://www.yahoo.com/news'),
+                 call('========================================================================================================================'),
+                 call('Title: Biden takes spill while getting off bike after beach ride'),
+                 call('Description: Description not provided'),
+                 call('Published: 2022-06-18 14:37:24'),
+                 call(
+                     'Image: https://s.yimg.com/uu/api/res/1.2/P2jnufkdwScKbL6Nlq5KwA--~B/aD0zNDQxO3c9NTE2MTthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/ap.org/917004c60ab9effc69660f0537591e24'),
+                 call('Read more: https://news.yahoo.com/biden-takes-spill-while-getting-143724765.html'),
+                 call(None),
+                 call('------------------------------------------------------------------------------------------------------------------------')
+                ])
 
 
 if __name__ == '__main__':
     main()
-
-
