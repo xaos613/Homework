@@ -1,4 +1,3 @@
-import json
 from unittest import TestCase, main
 from unittest.mock import patch, call
 

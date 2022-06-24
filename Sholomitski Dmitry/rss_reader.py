@@ -3,10 +3,10 @@
 написать тесты для json
 """
 
-
 import html
 import json
 import re
+import sys
 from urllib.parse import urlparse
 
 import requests
@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 from dateparser import parse
 
 import rss_exceptions
-from settings import logger_info, check_args
+from settings import logger_info
 
 
 class RSSParser:
@@ -22,7 +22,7 @@ class RSSParser:
         self.settings = settings
         self.rss_content = self.url_request(settings['source'])
         self.list_of_items = self.parser(self.rss_content)
-        items_for_print = sorted(self.list_of_items, key=lambda x: x['item_pubdate'], reverse=True)[:settings['limit']]
+        items_for_print = sorted(self.list_of_items, key=lambda _: _['item_pubdate'], reverse=True)[:settings['limit']]
 
         if self.settings['json']:
             RSSParser.json_print(items_for_print)
@@ -31,16 +31,6 @@ class RSSParser:
 
     @staticmethod
     def convert_to_text_format(dict_for_print: dict):
-        #
-        # return "".join(
-        #     [f"Title: {dict_for_print['item_title']}\n"
-        #      f"Description: {dict_for_print['item_description']}\n"
-        #      f"Published: {dict_for_print['item_pubdate']}\n"
-        #      f"Image: {dict_for_print['item_image']}\n"
-        #      f"Read more: {dict_for_print['item_link']}\n"
-        #      ]
-        # )
-
         print(f"Title: {dict_for_print['item_title']}")
         print(f"Description: {dict_for_print['item_description']}")
         print(f"Published: {dict_for_print['item_pubdate']}")
@@ -99,9 +89,16 @@ class RSSParser:
 
         logger_info.info(f'Making a request to {url} ')
         if RSSParser.check_url(url):
-            with requests.get(url, headers=headers_dict) as response:
-                logger_info.info('Connect to URL, reading data')
-                rss_content = response.content
+            try:
+                with requests.get(url, headers=headers_dict, timeout=2) as response:
+                    logger_info.info('Connect to URL, reading data')
+                    if response.status_code == 200:
+                        logger_info.info('Successfully connected to URL ')
+
+                    rss_content = response.content
+            except requests.exceptions.ConnectTimeout:
+                print('Bad URL, cann\'t connect')
+                sys.exit()
 
         logger_info.info('Rss data successfully decoded')
 
@@ -182,5 +179,13 @@ class RSSParser:
 
 
 if __name__ == '__main__':
-    settings = check_args()
-    RSSParser(settings)
+    settings = {
+        'limit': 1,
+        'json': False,
+        'verbose': False,
+        'source': 'https://auto.onliner.by/feed'
+    }
+
+    # settings = check_args()
+    x = RSSParser(settings)
+    # x.url_request('tut.by')
