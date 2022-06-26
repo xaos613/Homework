@@ -2,8 +2,6 @@ import argparse
 import logging
 
 
-
-
 def get_args(args=None):
     parser = argparse.ArgumentParser(description='RSS parser')
     parser.add_argument('source', default=None, help='RSS URL', nargs='?')
@@ -15,10 +13,10 @@ def get_args(args=None):
 
     parser.add_argument('--date', type=str, help='Gets a date in YYYYMMDD format. Print news from the specified date.')
 
-    # parser.add_argument('--to-html', action='store_true', default=False,
-    #                     help='Convert news to HTML file (provide path to folder or file *.html)')
-    # parser.add_argument('--to-pdf', action='store_true', default=False,
-    #                     help='Convert news to PDF file (provide path to folder or file *.pdf)')
+    parser.add_argument('--to-html', action='store_true', default=False,
+                        help='Convert news to HTML file (provide path to folder or file *.html)')
+    parser.add_argument('--to-pdf', action='store_true', default=False,
+                        help='Convert news to PDF file (provide path to folder or file *.pdf)')
     return parser.parse_args(args)
 
 
@@ -30,8 +28,8 @@ def check_args(args = None):
         'json': True if args.json else False,
         'verbose': logging.INFO if args.verbose else logger_info.disable(),
         'date': args.date if args.date else None,
-        # 'pdf': True if args.to_pdf else False,
-        # 'html': True if args.to_html else False,
+        'pdf': True if args.to_pdf else False,
+        'html': True if args.to_html else False,
         'source': args.source if args.source else None,
     }
 

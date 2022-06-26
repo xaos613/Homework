@@ -4,7 +4,7 @@
 
 если нет новостей - напечатать "новостей нет"
 если все тэги пустые - поднять ошибку не та разметка (или попсотреть как проверить разметку html или xml)
-
+проверить на валидность вводимой даты
 """
 
 import html
@@ -139,9 +139,9 @@ class RSSParser:
             if items_for_print[number_item]['chanel_title'] != items_for_print[number_item - 1]['chanel_title']:
                 print_header = True
             if print_header:
-                print(items_for_print[number_item]['chanel_title'])
-                print(items_for_print[number_item]['chanel_link'])
-                print('=' * 120)
+                print('Chanel title: ',items_for_print[number_item]['chanel_title'])
+                print('Chanel link: ',items_for_print[number_item]['chanel_link'])
+                print('*' * 120)
                 print_header = False
             RSSParser.convert_to_text_format(items_for_print[number_item])
             print('-' * 120)
@@ -207,6 +207,7 @@ class RSSParser:
 
 class RSSarchive(RSSParser):
     def __init__(self,settings):
+
         archive = RSSarchive.getarchive()
         list_from_archive = RSSarchive.get_items_from_archive(archive,settings)
         items_for_print = sorted(list_from_archive, key=lambda x: x['item_pubdate'])[:settings['limit']]
@@ -219,6 +220,7 @@ class RSSarchive(RSSParser):
 
     @staticmethod
     def getarchive():
+        logger_info.info(f'Getting new from local Archive')
         with open(os.getcwd() + '/.archive.pkl', 'rb') as pkl:
             unpickler = pickle.Unpickler(pkl)
             archive = unpickler.load()
@@ -226,24 +228,16 @@ class RSSarchive(RSSParser):
 
     @staticmethod
     def get_items_from_archive(archive,settings):
+        logger_info.info(f'Filtering new new in archive with provided settings')
         return_list = []
         for item in archive:
             if item['item_pubdate'][:10].replace('-', '') == settings['date']:
-                if item['rss_url'] == settings['source'] or settings['source'] == None:
+                if settings['source'] in (item['rss_url'], None):
                     return_list.append(item)
         return return_list
 
 def main():
     settings = check_args()
-
-    settings = {
-        'limit': None,
-        'json': True,
-        'verbose': False,
-        'source': None,
-        # 'date':'20220625'
-
-    }
     try:
         if settings['date']:
             RSSarchive(settings)
@@ -255,7 +249,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-
-

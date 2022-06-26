@@ -56,16 +56,17 @@ class TestRSSParser(TestCase):
         with self.assertRaises(rss_exceptions.BadUrlError):
             RSSParser.check_url('https://')
         with self.assertRaises(rss_exceptions.EmptyUrlError):
-            RSSParser.check_url()
-        with self.assertRaises(rss_exceptions.EmptyUrlError):
-            RSSParser.check_url(' ')
+            RSSParser.check_url(None)
 
     def test_parse_args(self):
-        parser = settings.get_args(['--limit', '3', '--verbose', '--json', 'https://money.onliner.by/feed'])
+        parser = settings.get_args(['--limit', '3', '--verbose', '--json', 'https://money.onliner.by/feed', '--to-html', '--to-pdf'])
         self.assertTrue(parser.limit)
         self.assertTrue(parser.verbose)
         self.assertTrue(parser.json)
         self.assertTrue(parser.source)
+        self.assertTrue(parser.to_pdf)
+        self.assertTrue(parser.to_html)
+
         with patch('builtins.input', return_value='--version'):
             self.assertRaises(SystemExit)
         with patch('builtins.input', return_value='--help'):
@@ -73,10 +74,15 @@ class TestRSSParser(TestCase):
 
     def test_check_args(self):
         parser = settings.check_args(['--limit', '3', '--verbose','--json', 'https://money.onliner.by/feed'])
+        archive_parser = settings.check_args(['--date', '20220606', '--to-html', '--to-pdf'])
         self.assertEqual(parser['limit'], 3)
         self.assertTrue(parser['verbose'])
         self.assertEqual(parser['source'], 'https://money.onliner.by/feed')
         self.assertTrue(parser['json'])
+        self.assertIsNone(archive_parser['source'])
+        self.assertEqual(archive_parser['date'], '20220606')
+        self.assertTrue(archive_parser['pdf'])
+        self.assertTrue(archive_parser['html'])
 
     @patch.object(RSSParser, 'url_request')
     def test_parser_mock(self, mock_url_request):
@@ -96,9 +102,9 @@ class TestRSSParser(TestCase):
             RSSParser.rss_print(list_of_items)
 
             self.assertEqual(mock_print.mock_calls, [
-                call('Yahoo News - Latest News & Headlines'),
-                 call('https://www.yahoo.com/news'),
-                 call('========================================================================================================================'),
+                call('Chanel title: ', 'Yahoo News - Latest News & Headlines'),
+                 call('Chanel link: ', 'https://www.yahoo.com/news'),
+                 call('*'*120),
                  call('Title: Biden takes spill while getting off bike after beach ride'),
                  call('Description: Description not provided'),
                  call('Published: 2022-06-18 14:37:24'),
@@ -108,8 +114,22 @@ class TestRSSParser(TestCase):
                  call('------------------------------------------------------------------------------------------------------------------------')
                 ])
 
-    def test_sttst(self):
-        print(RSSParser.time_parser('Tue, 24 May 2022 23:45:43 GMT'))
+    @patch('builtins.print')
+    def test_json_print(self, mock_print):
+        with open('Tests/test_files/test_print1.txt', 'r') as rss_file1:
+            list_of_items = eval(rss_file1.read())
+
+            RSSParser.json_print(list_of_items)
+
+            self.assertEqual(mock_print.mock_calls, [
+                call('{\n    "chanel_title": "Yahoo News - Latest News & Headlines",'
+                     '\n    "chanel_link": "https://www.yahoo.com/news",'
+                     '\n    "item_title": "Biden takes spill while getting off bike after beach ride",'
+                     '\n    "item_pubdate": "2022-06-18 14:37:24",'
+                     '\n    "item_description": "Description not provided",'
+                     '\n    "item_link": "https://news.yahoo.com/biden-takes-spill-while-getting-143724765.html",'
+                     '\n    "item_image": "https://s.yimg.com/uu/api/res/1.2/P2jnufkdwScKbL6Nlq5KwA--~B/aD0zNDQxO3c9NTE2MTthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/ap.org/917004c60ab9effc69660f0537591e24"\n}')],
+                )
 
 
 if __name__ == '__main__':
