@@ -1,6 +1,10 @@
 """
 написать тестовые можели для  всех вариантов RSS
 написать тесты для json
+
+если нет новостей - напечатать "новостей нет"
+если все тэги пустые - поднять ошибку не та разметка (или попсотреть как проверить разметку html или xml)
+
 """
 
 import html
@@ -12,7 +16,6 @@ import sys
 from urllib.parse import urlparse
 
 import requests
-import self as self
 from bs4 import BeautifulSoup
 from dateparser import parse
 
@@ -78,16 +81,16 @@ class RSSParser:
     def check_url(url='') -> bool:
 
         logger_info.info(f'Validating URL: {url}')
-        url = url.strip()
-        if not url:
-            raise rss_exceptions.EmptyUrlError('Empty argument passed, please pass an URL to proceed')
 
+        if url is None:
+            raise rss_exceptions.EmptyUrlError('Empty argument passed, please add an URL to proceed')
+        url = url.strip()
         result = urlparse(url)
         if all([result.netloc, result.scheme]):
             logger_info.info('URL validated successfully')
             return True
         else:
-            raise rss_exceptions.BadUrlError('Invalid URL: URL must contain scheme and network location')
+            raise rss_exceptions.BadUrlError('Invalid URL: URL must contain scheme and network location, try to add http://')
 
     @staticmethod
     def text_cleaner(string):
@@ -206,7 +209,7 @@ class RSSarchive(RSSParser):
     def __init__(self,settings):
         archive = RSSarchive.getarchive()
         list_from_archive = RSSarchive.get_items_from_archive(archive,settings)
-        items_for_print = sorted(list_from_archive, key=lambda x: x['item_pubdate'], reverse=True)[:settings['limit']]
+        items_for_print = sorted(list_from_archive, key=lambda x: x['item_pubdate'])[:settings['limit']]
 
         if settings['json']:
             RSSParser.json_print(items_for_print)
@@ -226,7 +229,7 @@ class RSSarchive(RSSParser):
         return_list = []
         for item in archive:
             if item['item_pubdate'][:10].replace('-', '') == settings['date']:
-                if item['rss_url'] == settings['source']:
+                if item['rss_url'] == settings['source'] or settings['source'] == None:
                     return_list.append(item)
         return return_list
 
@@ -234,11 +237,12 @@ def main():
     settings = check_args()
 
     settings = {
-        'limit': 1,
-        'json': False,
+        'limit': None,
+        'json': True,
         'verbose': False,
-        'source': 'https://auto.onliner.by/feed',
-        'date': '20220623'
+        'source': None,
+        # 'date':'20220625'
+
     }
     try:
         if settings['date']:

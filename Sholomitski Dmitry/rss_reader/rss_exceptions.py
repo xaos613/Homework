@@ -14,7 +14,6 @@ class BadUrlError(RssReaderException):
     pass
 
 
-
 # class NoDataInCache(RssReaderException):
     # pass
 
