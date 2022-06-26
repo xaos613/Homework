@@ -1,0 +1,5 @@
+beautifulsoup4
+dateparser
+fpdf
+lxml
+requests
