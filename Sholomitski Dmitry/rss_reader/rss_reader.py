@@ -57,6 +57,7 @@ class RSSParser:
             return checked_path
         else:
             try:
+                checked_path = os.path.join(os.path.dirname(__file__), checked_path)
                 os.makedirs(checked_path)
                 return checked_path
 
@@ -280,7 +281,7 @@ class RSSParser:
         :return: save in HTML page
         """
 
-        logger_info.info('saving to HTML file')
+
 
         html_content = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n' \
                        '<title>Formatted RSS News</title>\n<style>\n' \
@@ -322,9 +323,14 @@ class RSSParser:
             <h4><a href=\"{items_for_print[number_item]['item_link']}\">Read more</a></h4></div></div>\n</br>"""
         html_content += '</body></html>'
         if self.settings['html']:
+            logger_info.info('saving to HTML file')
             path_to_save = RSSParser.valid_path(path_to_save)
-            output = open(os.path.join(path_to_save, "export.html"), "w", encoding='utf-8')
+            path_to_file = os.path.join(path_to_save, "export.html")
+            output = open(path_to_file, "w", encoding='utf-8')
             output.write(html_content)
+            print(f'Your result saved to {path_to_file}')
+
+
             output.close()
         return html_content
 
@@ -336,15 +342,18 @@ class RSSParser:
         :return: convert HTML to PDF
         """
         # open output file for writing (truncated binary)
+        logger_info.info('saving to PDF file')
 
         path_to_save = RSSParser.valid_path(path_to_save)
-        with open(os.path.join(path_to_save, 'export.pdf'), "w+b") as result_file:
+        path_to_file = os.path.join(path_to_save, 'export.pdf')
+        with open(path_to_file, "w+b") as result_file:
             font_path = os.path.dirname(__file__) + r'/Fonts/calibri.ttf'
             pdfmetrics.registerFont(TTFont('Calibri', font_path))
             DEFAULT_FONT["helvetica"] = "Calibri"
             # convert HTML to PDF
             source_html = self.save_to_html(items_for_print)
             pisa_status = pisa.CreatePDF(source_html, dest=result_file, encoding='utf-8')
+            print(f'Your result saved to {path_to_file}')
 
         # return False on success and True on errors
         return pisa_status.err
