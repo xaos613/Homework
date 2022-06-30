@@ -48,8 +48,8 @@ class RSSParser:
         :param new_from_reader: list of dictionaries of news items
         :return: Nothing
         """
-        if os.path.exists(os.getcwd() + '/.test_archive.pkl'):
-            with open(os.getcwd() + '/.test_archive.pkl', 'rb') as pkl:
+        if os.path.exists(os.getcwd() + '/.archive.pkl'):
+            with open(os.getcwd() + '/.archive.pkl', 'rb') as pkl:
                 unpickler = pickle.Unpickler(pkl)
                 archive = unpickler.load()
                 for item in new_from_reader:
@@ -61,7 +61,7 @@ class RSSParser:
         else:
             archive = new_from_reader
 
-        with open(os.getcwd() + '/.test_archive.pkl', 'wb') as pkl:
+        with open(os.getcwd() + '/.archive.pkl', 'wb') as pkl:
             pickle.dump(archive, pkl)
 
     @staticmethod
@@ -329,7 +329,7 @@ class RSSarchive(RSSParser):
     """
 
     def __init__(self, settings):
-        archive_path = os.getcwd() + '/.test_archive.pkl'
+        archive_path = os.getcwd() + '/.archive.pkl'
         self.settings = settings
         archive = RSSarchive.getarchive(archive_path)
 
