@@ -287,7 +287,7 @@ class RSSParser:
             html_content += '<div class = "wrapper"><div class="layer1">'
             if items_for_print[number_item]['item_image'] == 'image is not provided':
                 items_for_print[number_item]['item_image'] = 'https://user-images.githubusercontent.com/' \
-                                                        '10515204/56117400-9a911800-5f85-11e9-878b-3f998609a6c8.jpg'
+                                                             '10515204/56117400-9a911800-5f85-11e9-878b-3f998609a6c8.jpg'
 
             html_content += f"""<a href=\"{items_for_print[number_item]['item_link']}\"><img class=\"alignleft\"
             src=\"{items_for_print[number_item]['item_image']}\" alt=\"\" width=\"300\"/></a>\n

@@ -123,7 +123,7 @@ class TestRSSParser(TestCase):
             self.assertEqual(mock_print.mock_calls, [call('channel title: ', 'Yahoo News - Latest News  Headlines'),
                                                      call('channel link: ', 'https://www.yahoo.com/news'),
                                                      call(
-                                                         '*'*120),
+                                                         '*' * 120),
                                                      call(
                                                          "Title: Spit, 'disrespect' arrive at Wimbledon as tennis"
                                                          " turns ugly"),
@@ -138,7 +138,7 @@ class TestRSSParser(TestCase):
                                                          'Read more: https://news.yahoo.com/spit-disrespect-arrive-'
                                                          'wimbledon-tennis-220151441.html'),
                                                      call(
-                                                         '-'*120)
+                                                         '-' * 120)
                                                      ])
 
     @patch('builtins.print')
@@ -163,7 +163,6 @@ class TestRSSParser(TestCase):
     def test_save_to_html(self):
         with open('Tests_files/dict_for_print.txt') as dict_1, open('Tests_files/html_file.html') as res_file1:
             html_content = RSSParser.save_to_html(self, eval(dict_1.read()))
-
 
             self.assertEqual(html_content, res_file1.read())
 
