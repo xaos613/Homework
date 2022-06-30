@@ -18,7 +18,6 @@ setup(
     },
 
     install_requires=requirements,
-    python_requires='>=3.10',
     classifiers=[
         "Programming Language :: Python :: 3.10",
         "Operating System :: OS Independent",
