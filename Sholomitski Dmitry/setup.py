@@ -8,7 +8,6 @@ setup(
     version='1.4',
     author='Dmitry Sholomitski',
     author_email='xaos613@gmail.com',
-    license='BSD_setup.py',
     description='RSS parser',
     py_modules=["rss_reader"],
     long_description='RSS parser using Python v3.10',

@@ -44,7 +44,7 @@ class RSSParser:
     @staticmethod
     def load_to_archive(new_from_reader):
         """
-        RSSparser base class. Takes a dictionary with settings as input and outputs needed information in the required form
+        Load list of news items to pickle
         :param new_from_reader: list of dictionaries of news items
         :return: Nothing
         """
