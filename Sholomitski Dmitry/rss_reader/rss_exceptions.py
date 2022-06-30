@@ -17,5 +17,6 @@ class BadUrlError(RssReaderException):
 class NoNewsinInCache(RssReaderException):
     pass
 
+
 class RssURLError(RssReaderException):
     pass

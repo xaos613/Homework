@@ -1,11 +1,3 @@
-"""
-написать преобразователь пуьти
-
-
-
-
-"""
-
 import html
 import json
 import os
@@ -28,6 +20,10 @@ from settings import logger_info, check_args
 
 
 class RSSParser:
+    """
+    RSSparser base class. Takes a dictionary with settings as input and outputs needed information in the required form
+    """
+
     def __init__(self, settings):
         self.settings = settings
         self.rss_content = self.url_request(settings['source'])
@@ -40,13 +36,20 @@ class RSSParser:
         else:
             RSSParser.rss_print(self.items_for_print)
 
-        if self.settings['pdf']: self.save_to_pdf(self.items_for_print)
-        if self.settings['html']: self.save_to_html(self.items_for_print)
+        if self.settings['pdf']:
+            self.save_to_pdf(self.items_for_print)
+        if self.settings['html']:
+            self.save_to_html(self.items_for_print)
 
     @staticmethod
     def load_to_archive(new_from_reader):
-        if os.path.exists(os.getcwd() + '/.archive.pkl'):
-            with open(os.getcwd() + '/.archive.pkl', 'rb') as pkl:
+        """
+        RSSparser base class. Takes a dictionary with settings as input and outputs needed information in the required form
+        :param new_from_reader: list of dictionaries of news items
+        :return: Nothing
+        """
+        if os.path.exists(os.getcwd() + '/.test_archive.pkl'):
+            with open(os.getcwd() + '/.test_archive.pkl', 'rb') as pkl:
                 unpickler = pickle.Unpickler(pkl)
                 archive = unpickler.load()
                 for item in new_from_reader:
@@ -58,11 +61,16 @@ class RSSParser:
         else:
             archive = new_from_reader
 
-        with open(os.getcwd() + '/.archive.pkl', 'wb') as pkl:
+        with open(os.getcwd() + '/.test_archive.pkl', 'wb') as pkl:
             pickle.dump(archive, pkl)
 
     @staticmethod
     def convert_to_text_format(dict_for_print: dict):
+        """
+        Print all the attributes of a news item
+        :param dict_for_print: Dictionary of news attributes
+        :return: print parametres
+        """
         print(f"Title: {dict_for_print['item_title']}")
         print(f"Description: {dict_for_print['item_description']}")
         print(f"Published: {dict_for_print['item_pubdate']}")
@@ -72,10 +80,10 @@ class RSSParser:
     @staticmethod
     def time_parser(date):
         """
-        принимает дату возвращает в одном формате
+        Takes the date and returns it in the single format
 
-        :param date: дата из å любом формате
-        :return: дата в формате '%Y-%m-%d %H:%M:%S'
+        :param date: date in any format
+        :return: date in format  '%Y-%m-%d %H:%M:%S'
         """
         try:
             converted_date = parse(date).strftime('%Y-%m-%d %H:%M:%S')
@@ -86,6 +94,10 @@ class RSSParser:
 
     @staticmethod
     def check_url(url='') -> bool:
+        """
+        :param url: url from settings
+        :return: True if url is valid
+        """
 
         logger_info.info(f'Validating URL: {url}')
 
@@ -98,12 +110,12 @@ class RSSParser:
             return True
         else:
             raise rss_exceptions.BadUrlError(
-                'Invalid URL: URL must contain scheme and network location, try to add http://')
+                'Invalid URL: URL must contain scheme and network location, try to add https://')
 
     @staticmethod
     def text_cleaner(string):
         """
-        очищает строку от ненужных символов
+        Clears the string of unnecessary characters
 
         :param string: virgin string
         :return: clean string
@@ -113,6 +125,11 @@ class RSSParser:
         return string
 
     def url_request(self, url):
+        """
+
+        :param url: link to rss source
+        :return: content of url in string format
+        """
         headers_dict = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
                                       'Chrome/102.0.5005.62 Safari/537.36',
                         'Accept': 'text/html,application/xhtml+xml,application/xml;'
@@ -138,13 +155,19 @@ class RSSParser:
         return rss_content
 
     def parser(self, rss_content):
+        """
+        Parses the received information of each news item and saves it in the archive
+        :param rss_content:  content of rss in string format
+        :return: list of dictionary with next parametres: 'rss_url','channel_title','channel_link','item_title',
+        'item_pubdate','item_description','item_link','item_image'
+        """
 
         list_of_items = []
         logger_info.info(f'Fetching RSS')
         soup = BeautifulSoup(rss_content, 'xml')
 
         if soup.find_all('item') == []:
-            raise rss_exceptions.RssURLError('Incorrect ULR, cann\'t fetch RSS. Probally it\'s HTML link')
+            raise rss_exceptions.RssURLError('Incorrect ULR, cann\'t fetch RSS. Probably it\'s HTML link')
 
         channel_title = soup.find("title").text
 
@@ -196,6 +219,11 @@ class RSSParser:
 
     @staticmethod
     def rss_print(items_for_print):
+        """
+
+        :param items_for_print: list of news items to print
+        :return: print news items in stdout
+        """
         logger_info.info(f' printing in needed format')
 
         print_header = True
@@ -213,16 +241,21 @@ class RSSParser:
 
     @staticmethod
     def json_print(items_for_print):
+        """
+        :param items_for_print: list of dictionaries of news items to print
+        :return: print news items  in stdout in json format
+        """
         for item in items_for_print:
             json_formatted_text = json.dumps(item, indent=4, ensure_ascii=False)
             print(json_formatted_text)
 
     def save_to_html(self, items_for_print):
         """
-        Save to HTML
-        :param item_list: list of tuples with title, date and link
-        :return: HTML file
+        saves the needed news to an HTML page
+        :param items_for_print: items_for_print: list of dictionaries of news items
+        :return: save in HTML page
         """
+
         logger_info.info('saving to HTML file')
 
         html_content = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n' \
@@ -247,14 +280,14 @@ class RSSParser:
             if print_header:
                 html_content += f"<h2>Channel\'s title: <a href=\"{items_for_print[number_item]['channel_link']}" \
                                 f"\">{items_for_print[number_item]['channel_title']}</a></h2>\n"
-                html_content += f"<h2>Link to channel: <a href=\{items_for_print[number_item]['channel_link']}\"" \
+                html_content += f"<h2>Link to channel: <a href=\"{items_for_print[number_item]['channel_link']}\"" \
                                 f">{items_for_print[number_item]['channel_link']}</a></h2>\n"
 
                 print_header = False
             html_content += '<div class = "wrapper"><div class="layer1">'
             if items_for_print[number_item]['item_image'] == 'image is not provided':
-                items_for_print[number_item]['item_image'] = \
-                    'https://user-images.githubusercontent.com/10515204/56117400-9a911800-5f85-11e9-878b-3f998609a6c8.jpg'
+                items_for_print[number_item]['item_image'] = 'https://user-images.githubusercontent.com/' \
+                                                        '10515204/56117400-9a911800-5f85-11e9-878b-3f998609a6c8.jpg'
 
             html_content += f"""<a href=\"{items_for_print[number_item]['item_link']}\"><img class=\"alignleft\"
             src=\"{items_for_print[number_item]['item_image']}\" alt=\"\" width=\"300\"/></a>\n
@@ -271,9 +304,15 @@ class RSSParser:
         return html_content
 
     def save_to_pdf(self, items_for_print):
+        """
+
+        saves the needed news to an PDF file (with using save_to_html funktion makes html and convert to PDF file)
+        :param items_for_print: list of dictionaries of news items to save
+        :return: convert HTML to PDF
+        """
         # open output file for writing (truncated binary)
         with open('export.pdf', "w+b") as result_file:
-            font_path = os.path.dirname(__file__) + r'/Fonts/calibri.ttf'  # !!!!!заменить путь
+            font_path = os.path.dirname(__file__) + r'/Fonts/calibri.ttf'
             pdfmetrics.registerFont(TTFont('Calibri', font_path))
             DEFAULT_FONT["helvetica"] = "Calibri"
             # convert HTML to PDF
@@ -285,9 +324,14 @@ class RSSParser:
 
 
 class RSSarchive(RSSParser):
+    """
+    If the date is given, it downloads the archive, checks it with the required settings and prints it out
+    """
+
     def __init__(self, settings):
+        archive_path = os.getcwd() + '/.test_archive.pkl'
         self.settings = settings
-        archive = RSSarchive.getarchive()
+        archive = RSSarchive.getarchive(archive_path)
 
         try:
             settings['date'] = str(settings['date'])
@@ -301,18 +345,25 @@ class RSSarchive(RSSParser):
             else:
                 RSSParser.rss_print(items_for_print)
 
-            if self.settings['pdf']: self.save_to_pdf(items_for_print)
-            if self.settings['html']: self.save_to_html(items_for_print)
+            if self.settings['pdf']:
+                self.save_to_pdf(items_for_print)
+            if self.settings['html']:
+                self.save_to_html(items_for_print)
 
         except ValueError:
             print(f'Entered date "{settings["date"]}" not in needed format, use this template:YYYYMMDD')
             sys.exit()
 
     @staticmethod
-    def getarchive():
+    def getarchive(archive_path):
+        """
+
+        :param archive_path: path to archive
+        :return: list of dictionaries with news items
+        """
         logger_info.info(f'Getting new from local Archive')
         try:
-            with open(os.getcwd() + '/.archive.pkl', 'rb') as pkl:
+            with open(archive_path, 'rb') as pkl:
                 unpickler = pickle.Unpickler(pkl)
                 archive = unpickler.load()
 
@@ -323,6 +374,12 @@ class RSSarchive(RSSParser):
 
     @staticmethod
     def get_items_from_archive(archive, settings):
+        """
+
+        :param archive: list of dictionaries of news items
+        :param settings: required settings given by user
+        :return: news checked with settings
+        """
         logger_info.info(f'Filtering new new in archive with provided settings')
         return_list = []
         for item in archive:
@@ -349,7 +406,7 @@ def main():
 
 
 if __name__ == '__main__':
-    # main()
+
     try:
         main()
     except Exception as e:
