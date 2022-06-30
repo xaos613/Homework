@@ -8,7 +8,7 @@ def get_args(args=None):
     parser = argparse.ArgumentParser(description='RSS parser')
     parser.add_argument('source', default=None, help='RSS URL', nargs='?')
     parser.add_argument("--version", help="Print version info and exit", action="version",
-                        version="You are using %(prog)s version 1.4")
+                        version="You are using %(prog)s version 1.5")
     parser.add_argument('--json', action='store_true', default=False, help='Save result as in JSON file')
     parser.add_argument('--limit', type=int, default=None, help='Limit news if this parameter provided')
     parser.add_argument('-v', '--verbose', action='store_true', default=False, help="Output verbose messages")
@@ -19,8 +19,6 @@ def get_args(args=None):
                         help='Convert news to HTML file (provide path to folder where save export file)')
     parser.add_argument('--to-pdf', nargs='?', const=f"{default_path}", action="store",
                         help='Convert news to PDF file (provide path to folder where save export file)')
-
-    parser.add_argument('--path', type=str, help='Gets path to save export files.', nargs='?')
 
     return parser.parse_args(args)
 

@@ -5,7 +5,7 @@ with open("requirements.txt", encoding="utf-8") as file:
 
 setup(
     name='rss_reader',
-    version='1.4',
+    version='1.5',
     author='Dmitry Sholomitski',
     author_email='xaos613@gmail.com',
     description='RSS parser',
