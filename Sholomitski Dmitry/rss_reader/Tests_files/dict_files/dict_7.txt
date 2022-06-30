@@ -1,0 +1,11 @@
+[{'channel_link': 'https://auto.onliner.by/',
+  'channel_title': 'Авто Onlíner',
+  'item_description': 'Вчера вечером в самом центре Бобруйска на автостоянку '
+                      'упало дерево. В этот момент здесь стоял кроссовер '
+                      'Hyundai, внутри которого находилась женщина-водитель. '
+                      'Подробности пишет сайт Komkur.info.Читать далее…',
+  'item_image': 'https://content.onliner.by/news/thumbnail/1966c44421c57d3ec175749cde6c9e29.jpeg',
+  'item_link': 'https://auto.onliner.by/2022/06/30/v-bobrujske-topol-upal-na-mashinu-ne-bylo-ni-grozy-ni-vetra',
+  'item_pubdate': '2022-06-30 11:48:45',
+  'item_title': 'В Бобруйске тополь упал на машину. Не было ни грозы, ни ветра',
+  'rss_url': 'https://test_url.com/xml'}]

@@ -1,0 +1,12 @@
+[{'channel_link': 'https://www.buzzfeednews.com',
+  'channel_title': 'BuzzFeed News',
+  'item_description': 'The policy prohibiting girls from attending school '
+                      'after sixth grade contradicts the regime’s previous '
+                      'promises to loosen restrictions on education '
+                      'rights.View Entire Post ›',
+  'item_image': 'https://img.buzzfeed.com/buzzfeed-static/static/2022-06/13/19/campaign_images/c453b771f93f/she-was-one-year-away-from-going-to-college-then--2-778-1655149050-7_dblbig.jpg',
+  'item_link': 'https://www.buzzfeednews.com/article/syedzabiullah/afghanistan-taliban-girls-school-ban',
+  'item_pubdate': '2022-06-13 20:32:05',
+  'item_title': 'She Was One Year Away From Going To College. Then The Taliban '
+                'Banned Her From School.',
+  'rss_url': 'https://test_url.com/xml'}]

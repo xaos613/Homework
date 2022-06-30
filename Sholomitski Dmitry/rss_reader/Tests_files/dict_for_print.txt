@@ -1,0 +1,103 @@
+[{'channel_link': 'https://www.yahoo.com/news',
+  'channel_title': 'Yahoo News - Latest News  Headlines',
+  'item_description': 'Description not provided',
+  'item_image': 'https://s.yimg.com/uu/api/res/1.2/Kn3F_gIJwe0a3uIOU.Tb2w--~B/aD0yMzgxO3c9MzU3MTthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/ap.org/4a35cff443aaabc2b49d94a5e7672369',
+  'item_link': 'https://news.yahoo.com/spit-disrespect-arrive-wimbledon-tennis-220151441.html',
+  'item_pubdate': '2022-06-28 22:01:51',
+  'item_title': "Spit, 'disrespect' arrive at Wimbledon as tennis turns ugly",
+  'rss_url': 'https://test_url.com/xml'}, {'channel_link': 'https://www.bbc.co.uk/news/',
+  'channel_title': 'BBC News - World',
+  'item_description': "According to US intelligence assessments, Russia's "
+                      'invasion is likely to grind on for some time.',
+  'item_image': 'image is not provided',
+  'item_link': 'https://www.bbc.co.uk/news/world-europe-61990495?at_medium=RSS&at_campaign=KARANGA',
+  'item_pubdate': '2022-06-30 03:00:59',
+  'item_title': 'Russia invasion: Putin still wants to take most of Ukraine - '
+                'US',
+  'rss_url': 'https://test_url.com/xml'},{'channel_link': 'https://news.google.com/?hl=en-US=US=US:en',
+  'channel_title': 'Top stories - Google News',
+  'item_description': 'Liz Cheney Calls Trump ‘a Domestic Threat That We Have '
+                      'Never Faced Before’The New York TimesLiz Cheney says US '
+                      "is 'confronting a domestic threat' in Donald "
+                      'TrumpCNNOpinion | Trump wanted loyalty above all. He '
+                      'got just the opposite.The Washington PostMSNBC’s '
+                      "Nicolle Wallace says Liz Cheney is targeting 'Trumpism' "
+                      'like her father targeted terrorism after 9/11Fox '
+                      'NewsRepublicans must choose Trump or the Constitution, '
+                      "Liz Cheney warns, describing 'threat' like no otherABC "
+                      'News',
+  'item_image': 'image is not provided',
+  'item_link': 'https://news.google.com/__i/rss/rd/articles/CBMiS2h0dHBzOi8vd3d3Lm55dGltZXMuY29tLzIwMjIvMDYvMjkvdXMvcG9saXRpY3MvbGl6LWNoZW5leS1zcGVlY2gtdHJ1bXAuaHRtbNIBAA?oc=5',
+  'item_pubdate': '2022-06-30 03:02:32',
+  'item_title': 'Liz Cheney Calls Trump ‘a Domestic Threat That We Have Never '
+                'Faced Before’ - The New York Times',
+  'rss_url': 'https://test_url.com/xml'},{'channel_link': 'https://www.nytimes.com/section/world',
+  'channel_title': 'NYT > World News',
+  'item_description': 'Applying the lessons of taekwondo, the regional '
+                      'military leader has rallied the embattled southern city '
+                      'of Mykolaiv.',
+  'item_image': 'image is not provided',
+  'item_link': 'https://www.nytimes.com/2022/06/30/world/europe/ukraine-vitaliy-kim-mykolaiv.html',
+  'item_pubdate': '2022-06-30 09:00:24',
+  'item_title': 'Vitaliy Kim, Master Motivator and Symbol of Ukraine’s '
+                'Resistance',
+  'rss_url': 'https://test_url.com/xml'},{'channel_link': 'https://www.cnbc.com/id/100727362/device/rss/rss.html',
+  'channel_title': 'International: Top News And Analysis',
+  'item_description': 'The trip is for the 25th anniversary on Friday of Hong '
+                      "Kong's handover to China from British colonial rule.",
+  'item_image': 'image is not provided',
+  'item_link': 'https://www.cnbc.com/2022/06/30/chinas-xi-arrives-in-hong-kong-in-first-trip-off-mainland-since-pandemic.html',
+  'item_pubdate': '2022-06-30 08:48:08',
+  'item_title': "China's Xi arrives in Hong Kong in his first trip off the "
+                'mainland since the onset of the pandemic',
+  'rss_url': 'https://test_url.com/xml'},{'channel_link': 'https://auto.onliner.by/',
+  'channel_title': 'Авто Onlíner',
+  'item_description': 'Вчера вечером в самом центре Бобруйска на автостоянку '
+                      'упало дерево. В этот момент здесь стоял кроссовер '
+                      'Hyundai, внутри которого находилась женщина-водитель. '
+                      'Подробности пишет сайт Komkur.info.Читать далее…',
+  'item_image': 'https://content.onliner.by/news/thumbnail/1966c44421c57d3ec175749cde6c9e29.jpeg',
+  'item_link': 'https://auto.onliner.by/2022/06/30/v-bobrujske-topol-upal-na-mashinu-ne-bylo-ni-grozy-ni-vetra',
+  'item_pubdate': '2022-06-30 11:48:45',
+  'item_title': 'В Бобруйске тополь упал на машину. Не было ни грозы, ни ветра',
+  'rss_url': 'https://test_url.com/xml'},{'channel_link': 'https://auto.onliner.by/',
+  'channel_title': 'Авто Onlíner',
+  'item_description': 'ДОБАВИЛ 1 Вчера вечером в самом центре Бобруйска на автостоянку '
+                      'упало дерево. В этот момент здесь стоял кроссовер '
+                      'Hyundai, внутри которого находилась женщина-водитель. '
+                      'Подробности пишет сайт Komkur.info.Читать далее…',
+  'item_image': 'https://content.onliner.by/news/thumbnail/1966c44421c57d3ec175749cde6c9e29.jpeg',
+  'item_link': 'https://auto.onliner.by/2022/06/30/v-bobrujske-topol-upal-na-mashinu-ne-bylo-ni-grozy-ni-vetra',
+  'item_pubdate': '2022-06-30 11:48:45',
+  'item_title': 'В Бобруйске тополь упал на машину. Не было ни грозы, ни ветра',
+  'rss_url': 'https://test_url.com/xml'},{'channel_link': 'https://auto.onliner.by/',
+  'channel_title': 'Авто Onlíner',
+  'item_description': 'ДОБАВИЛ 2 Вчера вечером в самом центре Бобруйска на автостоянку '
+                      'упало дерево. В этот момент здесь стоял кроссовер '
+                      'Hyundai, внутри которого находилась женщина-водитель. '
+                      'Подробности пишет сайт Komkur.info.Читать далее…',
+  'item_image': 'https://content.onliner.by/news/thumbnail/1966c44421c57d3ec175749cde6c9e29.jpeg',
+  'item_link': 'https://auto.onliner.by/2022/06/30/v-bobrujske-topol-upal-na-mashinu-ne-bylo-ni-grozy-ni-vetra',
+  'item_pubdate': '2022-06-30 11:48:45',
+  'item_title': 'В Бобруйске тополь упал на машину. Не было ни грозы, ни ветра',
+  'rss_url': 'https://test_url.com/xml'},{'channel_link': 'https://auto.onliner.by/',
+  'channel_title': 'Авто Onlíner',
+  'item_description': 'ДОБАВИЛИ 3 Вчера вечером в самом центре Бобруйска на автостоянку '
+                      'упало дерево. В этот момент здесь стоял кроссовер '
+                      'Hyundai, внутри которого находилась женщина-водитель. '
+                      'Подробности пишет сайт Komkur.info.Читать далее…',
+  'item_image': 'https://content.onliner.by/news/thumbnail/1966c44421c57d3ec175749cde6c9e29.jpeg',
+  'item_link': 'https://auto.onliner.by/2022/06/30/v-bobrujske-topol-upal-na-mashinu-ne-bylo-ni-grozy-ni-vetra',
+  'item_pubdate': '2022-06-30 11:48:45',
+  'item_title': 'В Бобруйске тополь упал на машину. Не было ни грозы, ни ветра',
+  'rss_url': 'https://test_url.com/xml'},{'channel_link': 'https://auto.onliner.by/',
+  'channel_title': 'Авто Onlíner',
+  'item_description': 'ДОБАВИЛИ 4 Вчера вечером в самом центре Бобруйска на автостоянку '
+                      'упало дерево. В этот момент здесь стоял кроссовер '
+                      'Hyundai, внутри которого находилась женщина-водитель. '
+                      'Подробности пишет сайт Komkur.info.Читать далее…',
+  'item_image': 'https://content.onliner.by/news/thumbnail/1966c44421c57d3ec175749cde6c9e29.jpeg',
+  'item_link': 'https://auto.onliner.by/2022/06/30/v-bobrujske-topol-upal-na-mashinu-ne-bylo-ni-grozy-ni-vetra',
+  'item_pubdate': '2022-06-30 11:48:45',
+  'item_title': 'В Бобруйске тополь упал на машину. Не было ни грозы, ни ветра',
+  'rss_url': 'https://test_url.com/xml'}]

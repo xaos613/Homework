@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:media="http://search.yahoo.com/mrss/" version="2.0">
+<channel>
+<title>Yahoo News - Latest News & Headlines</title>
+<link>https://www.yahoo.com/news</link>
+<description>The latest news and headlines from Yahoo! News. Get breaking news stories and in-depth coverage with videos and photos.</description>
+<language>en-US</language>
+<copyright>Copyright (c) 2022 Yahoo! Inc. All rights reserved</copyright>
+<pubDate>Thu, 30 Jun 2022 05:40:03 -0400</pubDate>
+<ttl>5</ttl>
+<image>
+<title>Yahoo News - Latest News & Headlines</title>
+<link>https://www.yahoo.com/news</link>
+<url>http://l.yimg.com/rz/d/yahoo_news_en-US_s_f_p_168x21_news.png</url>
+</image>
+<item>
+<title>Spit, 'disrespect' arrive at Wimbledon as tennis turns ugly</title>
+<link>https://news.yahoo.com/spit-disrespect-arrive-wimbledon-tennis-220151441.html</link>
+<pubDate>2022-06-28T22:01:51Z</pubDate>
+<source url="http://www.ap.org/">Associated Press</source>
+<guid isPermaLink="false">spit-disrespect-arrive-wimbledon-tennis-220151441.html</guid>
+<media:content height="86" url="https://s.yimg.com/uu/api/res/1.2/Kn3F_gIJwe0a3uIOU.Tb2w--~B/aD0yMzgxO3c9MzU3MTthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/ap.org/4a35cff443aaabc2b49d94a5e7672369" width="130"/>
+<media:credit role="publishing company"/>
+</item>
+    </channel>
+</rss>
+

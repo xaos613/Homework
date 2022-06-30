@@ -1,0 +1,10 @@
+[{'channel_link': 'https://www.bbc.co.uk/news/',
+  'channel_title': 'BBC News - World',
+  'item_description': "According to US intelligence assessments, Russia's "
+                      'invasion is likely to grind on for some time.',
+  'item_image': 'image is not provided',
+  'item_link': 'https://www.bbc.co.uk/news/world-europe-61990495?at_medium=RSS&at_campaign=KARANGA',
+  'item_pubdate': '2022-06-30 03:00:59',
+  'item_title': 'Russia invasion: Putin still wants to take most of Ukraine - '
+                'US',
+  'rss_url': 'https://test_url.com/xml'}]

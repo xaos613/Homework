@@ -1,0 +1,11 @@
+[{'channel_link': 'https://www.nytimes.com/section/world',
+  'channel_title': 'NYT > World News',
+  'item_description': 'Applying the lessons of taekwondo, the regional '
+                      'military leader has rallied the embattled southern city '
+                      'of Mykolaiv.',
+  'item_image': 'image is not provided',
+  'item_link': 'https://www.nytimes.com/2022/06/30/world/europe/ukraine-vitaliy-kim-mykolaiv.html',
+  'item_pubdate': '2022-06-30 09:00:24',
+  'item_title': 'Vitaliy Kim, Master Motivator and Symbol of Ukraine’s '
+                'Resistance',
+  'rss_url': 'https://test_url.com/xml'}]

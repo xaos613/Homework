@@ -1,0 +1,33 @@
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:nyt="http://www.nytimes.com/namespaces/rss/2.0" version="2.0">
+<channel>
+<title>NYT > Top Stories</title>
+<link>https://www.nytimes.com</link>
+<atom:link href="https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml" rel="self" type="application/rss+xml"/>
+<description/>
+<language>en-us</language>
+<copyright>Copyright 2022 The New York Times Company</copyright>
+<lastBuildDate>Thu, 30 Jun 2022 09:08:53 +0000</lastBuildDate>
+<pubDate>Thu, 30 Jun 2022 08:22:16 +0000</pubDate>
+<image>
+<title>NYT > Top Stories</title>
+<url>https://static01.nyt.com/images/misc/NYT_logo_rss_250x40.png</url>
+<link>https://www.nytimes.com</link>
+</image>
+<item>
+<title>In States Banning Abortion, a Growing Rift Over Enforcement</title>
+<link>https://www.nytimes.com/2022/06/29/us/abortion-enforcement-prosecutors.html</link>
+<guid isPermaLink="true">https://www.nytimes.com/2022/06/29/us/abortion-enforcement-prosecutors.html</guid>
+<atom:link href="https://www.nytimes.com/2022/06/29/us/abortion-enforcement-prosecutors.html" rel="standout"/>
+<description>A reluctance by some liberal district attorneys to bring criminal charges against abortion providers is already complicating the legal landscape in some states.</description>
+<dc:creator>J. David Goodman and Jack Healy</dc:creator>
+<pubDate>Wed, 29 Jun 2022 21:41:55 +0000</pubDate>
+<category domain="http://www.nytimes.com/namespaces/keywords/des">Abortion</category>
+<category domain="http://www.nytimes.com/namespaces/keywords/des">Law and Legislation</category>
+<category domain="http://www.nytimes.com/namespaces/keywords/des">District Attorneys</category>
+<category domain="http://www.nytimes.com/namespaces/keywords/nyt_geo">Texas</category>
+<media:content height="151" medium="image" url="https://static01.nyt.com/images/2022/06/29/us/29abortion-enforcement03/29abortion-enforcement03-moth.jpg" width="151"/>
+<media:credit>Callaghan O'Hare/Reuters</media:credit>
+<media:description>Abortion rights protesters outside a courthouse in Houston. Some Democratic prosecutors are uneasy about declaring their districts safe havens for abortions, worried doing so could be used as grounds for their own removal by Republican leaders.</media:description>
+</item>
+</channel>
+</rss>

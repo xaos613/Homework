@@ -1,10 +1,9 @@
 """
-написать тестовые можели для  всех вариантов RSS
-написать тесты для json
+написать преобразователь пуьти
 
-если нет новостей - напечатать "новостей нет"
-если все тэги пустые - поднять ошибку не та разметка (или попсотреть как проверить разметку html или xml)
-проверить на валидность вводимой даты
+
+
+
 """
 
 import html
@@ -13,11 +12,16 @@ import os
 import pickle
 import re
 import sys
+from datetime import datetime
 from urllib.parse import urlparse
 
 import requests
 from bs4 import BeautifulSoup
 from dateparser import parse
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from xhtml2pdf import pisa
+from xhtml2pdf.default import DEFAULT_FONT
 
 import rss_exceptions
 from settings import logger_info, check_args
@@ -28,12 +32,16 @@ class RSSParser:
         self.settings = settings
         self.rss_content = self.url_request(settings['source'])
         self.list_of_items = self.parser(self.rss_content)
-        items_for_print = sorted(self.list_of_items, key=lambda x: x['item_pubdate'], reverse=True)[:settings['limit']]
+        self.items_for_print = sorted(self.list_of_items, key=lambda x: x['item_pubdate'], reverse=True)[
+                               :settings['limit']]
 
         if self.settings['json']:
-            RSSParser.json_print(items_for_print)
+            RSSParser.json_print(self.items_for_print)
         else:
-            RSSParser.rss_print(items_for_print)
+            RSSParser.rss_print(self.items_for_print)
+
+        if self.settings['pdf']: self.save_to_pdf(self.items_for_print)
+        if self.settings['html']: self.save_to_html(self.items_for_print)
 
     @staticmethod
     def load_to_archive(new_from_reader):
@@ -52,7 +60,6 @@ class RSSParser:
 
         with open(os.getcwd() + '/.archive.pkl', 'wb') as pkl:
             pickle.dump(archive, pkl)
-
 
     @staticmethod
     def convert_to_text_format(dict_for_print: dict):
@@ -90,7 +97,8 @@ class RSSParser:
             logger_info.info('URL validated successfully')
             return True
         else:
-            raise rss_exceptions.BadUrlError('Invalid URL: URL must contain scheme and network location, try to add http://')
+            raise rss_exceptions.BadUrlError(
+                'Invalid URL: URL must contain scheme and network location, try to add http://')
 
     @staticmethod
     def text_cleaner(string):
@@ -129,41 +137,23 @@ class RSSParser:
 
         return rss_content
 
-    @staticmethod
-    def rss_print(items_for_print):
-        logger_info.info(f' printing in needed format')
-
-        print_header = True
-
-        for number_item in range(len(items_for_print)):
-            if items_for_print[number_item]['chanel_title'] != items_for_print[number_item - 1]['chanel_title']:
-                print_header = True
-            if print_header:
-                print('Chanel title: ',items_for_print[number_item]['chanel_title'])
-                print('Chanel link: ',items_for_print[number_item]['chanel_link'])
-                print('*' * 120)
-                print_header = False
-            RSSParser.convert_to_text_format(items_for_print[number_item])
-            print('-' * 120)
-
-    @staticmethod
-    def json_print(items_for_print):
-        for item in items_for_print:
-            json_formatted_text = json.dumps(item, indent=4, ensure_ascii=False)
-            print(json_formatted_text)
-
     def parser(self, rss_content):
 
         list_of_items = []
         logger_info.info(f'Fetching RSS')
         soup = BeautifulSoup(rss_content, 'xml')
 
-        chanel_title = soup.find("title").text
+        if soup.find_all('item') == []:
+            raise rss_exceptions.RssURLError('Incorrect ULR, cann\'t fetch RSS. Probally it\'s HTML link')
+
+        channel_title = soup.find("title").text
 
         if soup.find('link').text != '':
-            chanel_link = soup.find('link').text
+            channel_link = soup.find('link').text
+        elif soup.find('atom:link').get('href') != '':
+            channel_link = soup.find('atom:link').get('href')
         else:
-            chanel_link = soup.find('atom:link').get('href')
+            channel_link = ''
 
         for item in soup.find_all('item'):
 
@@ -191,9 +181,9 @@ class RSSParser:
                     item_image = 'image is not provided'
 
             list_of_items.append({
-                'rss_url':self.settings['source'],
-                'chanel_title': chanel_title,
-                'chanel_link': chanel_link,
+                'rss_url': self.settings['source'],
+                'channel_title': channel_title,
+                'channel_link': channel_link,
                 'item_title': item_title,
                 'item_pubdate': item_pubdate,
                 'item_description': item_description,
@@ -204,48 +194,163 @@ class RSSParser:
         RSSParser.load_to_archive(list_of_items)
         return list_of_items
 
+    @staticmethod
+    def rss_print(items_for_print):
+        logger_info.info(f' printing in needed format')
+
+        print_header = True
+
+        for number_item in range(len(items_for_print)):
+            if items_for_print[number_item]['channel_title'] != items_for_print[number_item - 1]['channel_title']:
+                print_header = True
+            if print_header:
+                print('channel title: ', items_for_print[number_item]['channel_title'])
+                print('channel link: ', items_for_print[number_item]['channel_link'])
+                print('*' * 120)
+                print_header = False
+            RSSParser.convert_to_text_format(items_for_print[number_item])
+            print('-' * 120)
+
+    @staticmethod
+    def json_print(items_for_print):
+        for item in items_for_print:
+            json_formatted_text = json.dumps(item, indent=4, ensure_ascii=False)
+            print(json_formatted_text)
+
+    def save_to_html(self, items_for_print):
+        """
+        Save to HTML
+        :param item_list: list of tuples with title, date and link
+        :return: HTML file
+        """
+        logger_info.info('saving to HTML file')
+
+        html_content = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n' \
+                       '<title>Formatted RSS News</title>\n<style>\n' \
+                       'h1,h2,h3,h4{margin: 0;}\n' \
+                       'h2 {font-size: 18px;text-align: center;margin-bottom: 15px;}\n' \
+                       'h3 {font-size: 16px;margin-bottom: 15px;font-weight: bolder;}\n' \
+                       'h4 {font-weight: 100;font-size: 14px;    margin-bottom: 5px;}\n' \
+                       '.wrapper {display: flex;}\n' \
+                       '.layer1 img {border-radius: 5px;}\n' \
+                       '.layer1 a {display: flex;}\n' \
+                       '.layer2 {padding-left: 15px}\n' \
+                       '.layer2 a {text-transform: uppercase;font-weight: bold;}</style><body>\n'
+
+        print_header = True
+
+        for number_item in range(len(items_for_print)):
+
+            if items_for_print[number_item]['channel_title'] != items_for_print[number_item - 1]['channel_title']:
+                print_header = True
+
+            if print_header:
+                html_content += f"<h2>Channel\'s title: <a href=\"{items_for_print[number_item]['channel_link']}" \
+                                f"\">{items_for_print[number_item]['channel_title']}</a></h2>\n"
+                html_content += f"<h2>Link to channel: <a href=\{items_for_print[number_item]['channel_link']}\"" \
+                                f">{items_for_print[number_item]['channel_link']}</a></h2>\n"
+
+                print_header = False
+            html_content += '<div class = "wrapper"><div class="layer1">'
+            if items_for_print[number_item]['item_image'] == 'image is not provided':
+                items_for_print[number_item]['item_image'] = \
+                    'https://user-images.githubusercontent.com/10515204/56117400-9a911800-5f85-11e9-878b-3f998609a6c8.jpg'
+
+            html_content += f"""<a href=\"{items_for_print[number_item]['item_link']}\"><img class=\"alignleft\"
+            src=\"{items_for_print[number_item]['item_image']}\" alt=\"\" width=\"300\"/></a>\n
+            </div><div class="layer2">
+            <h3>{items_for_print[number_item]['item_title']}</h3>\n
+            <h4> {items_for_print[number_item]['item_description']}</h4>\n
+            <h4>Published at: {items_for_print[number_item]['item_pubdate']}</h4>\n
+            <h4><a href=\"{items_for_print[number_item]['item_link']}\">Read more</a></h4></div></div>\n</br>"""
+        html_content += '</body></html>'
+        if self.settings['html']:
+            output = open("export.html", "w", encoding='utf-8')
+            output.write(html_content)
+            output.close()
+        return html_content
+
+    def save_to_pdf(self, items_for_print):
+        # open output file for writing (truncated binary)
+        with open('export.pdf', "w+b") as result_file:
+            font_path = os.path.dirname(__file__) + r'/Fonts/calibri.ttf'  # !!!!!заменить путь
+            pdfmetrics.registerFont(TTFont('Calibri', font_path))
+            DEFAULT_FONT["helvetica"] = "Calibri"
+            # convert HTML to PDF
+            source_html = self.save_to_html(items_for_print)
+            pisa_status = pisa.CreatePDF(source_html, dest=result_file, encoding='utf-8')
+
+        # return False on success and True on errors
+        return pisa_status.err
+
 
 class RSSarchive(RSSParser):
-    def __init__(self,settings):
-
+    def __init__(self, settings):
+        self.settings = settings
         archive = RSSarchive.getarchive()
-        list_from_archive = RSSarchive.get_items_from_archive(archive,settings)
-        items_for_print = sorted(list_from_archive, key=lambda x: x['item_pubdate'])[:settings['limit']]
 
-        if settings['json']:
-            RSSParser.json_print(items_for_print)
-        else:
-            RSSParser.rss_print(items_for_print)
+        try:
+            settings['date'] = str(settings['date'])
+            datetime.strptime(settings['date'], '%Y%m%d')
 
+            list_from_archive = RSSarchive.get_items_from_archive(archive, settings)
+            items_for_print = sorted(list_from_archive, key=lambda x: x['item_pubdate'])[:settings['limit']]
+
+            if settings['json']:
+                RSSParser.json_print(items_for_print)
+            else:
+                RSSParser.rss_print(items_for_print)
+
+            if self.settings['pdf']: self.save_to_pdf(items_for_print)
+            if self.settings['html']: self.save_to_html(items_for_print)
+
+        except ValueError:
+            print(f'Entered date "{settings["date"]}" not in needed format, use this template:YYYYMMDD')
+            sys.exit()
 
     @staticmethod
     def getarchive():
         logger_info.info(f'Getting new from local Archive')
-        with open(os.getcwd() + '/.archive.pkl', 'rb') as pkl:
-            unpickler = pickle.Unpickler(pkl)
-            archive = unpickler.load()
-        return archive
+        try:
+            with open(os.getcwd() + '/.archive.pkl', 'rb') as pkl:
+                unpickler = pickle.Unpickler(pkl)
+                archive = unpickler.load()
+
+                return archive
+        except (FileNotFoundError, TypeError):
+            print('There no any news in cache')
+            sys.exit(1)
 
     @staticmethod
-    def get_items_from_archive(archive,settings):
+    def get_items_from_archive(archive, settings):
         logger_info.info(f'Filtering new new in archive with provided settings')
         return_list = []
         for item in archive:
             if item['item_pubdate'][:10].replace('-', '') == settings['date']:
                 if settings['source'] in (item['rss_url'], None):
                     return_list.append(item)
+        if return_list == []:
+            if settings['source'] is not None:
+                in_source = f"at {settings['source']}"
+            else:
+                in_source = ''
+            print(f'There no any news in cache with your date ({settings["date"]}) {in_source}')
         return return_list
+
 
 def main():
     settings = check_args()
-    try:
-        if settings['date']:
-            RSSarchive(settings)
-    except KeyError:
+
+    if settings['date'] is None:
         RSSParser(settings)
 
-
+    else:
+        RSSarchive(settings)
 
 
 if __name__ == '__main__':
-    main()
+    # main()
+    try:
+        main()
+    except Exception as e:
+        print(f'Something goes wrong: {e}')

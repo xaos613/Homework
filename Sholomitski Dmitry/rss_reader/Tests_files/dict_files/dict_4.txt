@@ -1,0 +1,10 @@
+[{'channel_link': 'https://www.cnbc.com/id/100727362/device/rss/rss.html',
+  'channel_title': 'International: Top News And Analysis',
+  'item_description': 'The trip is for the 25th anniversary on Friday of Hong '
+                      "Kong's handover to China from British colonial rule.",
+  'item_image': 'image is not provided',
+  'item_link': 'https://www.cnbc.com/2022/06/30/chinas-xi-arrives-in-hong-kong-in-first-trip-off-mainland-since-pandemic.html',
+  'item_pubdate': '2022-06-30 08:48:08',
+  'item_title': "China's Xi arrives in Hong Kong in his first trip off the "
+                'mainland since the onset of the pandemic',
+  'rss_url': 'https://test_url.com/xml'}]

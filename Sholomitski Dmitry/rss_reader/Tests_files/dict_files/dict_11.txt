@@ -1,0 +1,10 @@
+[{'channel_link': 'https://vse.sale/',
+  'channel_title': 'Газета ВСЁ',
+  'item_description': 'Празднование Дня города прошло на высоком уровне - была '
+                      'составлена насыщенная программа, соблюдались меры '
+                      'безопасности и контроля, оперативно убран мусор.',
+  'item_image': 'image is not provided',
+  'item_link': 'https://vse.sale/news/view/37519',
+  'item_pubdate': '2022-06-28 19:52:00',
+  'item_title': 'Проблема перегороженных улиц',
+  'rss_url': 'https://test_url.com/xml'}]

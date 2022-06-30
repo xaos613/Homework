@@ -14,9 +14,8 @@ class BadUrlError(RssReaderException):
     pass
 
 
-# class NoDataInCache(RssReaderException):
-    # pass
+class NoNewsinInCache(RssReaderException):
+    pass
 
-
-if __name__ == '__main__':
+class RssURLError(RssReaderException):
     pass

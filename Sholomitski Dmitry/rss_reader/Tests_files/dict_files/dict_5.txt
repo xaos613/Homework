@@ -1,0 +1,12 @@
+[{'channel_link': 'https://www.cbsnews.com/',
+  'channel_title': 'World - CBSNews.com',
+  'item_description': 'Amid the war in Ukraine, President Biden said Wednesday '
+                      'the U.S. will send more military might to nine European '
+                      'countries. Russia threatened to respond with '
+                      '"compensatory measures." Nancy Cordes has the latest '
+                      'from the NATO summit in Madrid.',
+  'item_image': 'https://assets2.cbsnewsstatic.com/hub/i/r/2022/06/29/4c08cced-c8b0-4cdc-be3e-10d01c731850/thumbnail/60x60/51f8a9de3eb98a1bb06411e3c6384409/cbsn-fusion-us-to-increase-its-military-presence-in-europe-thumbnail-1096498-640x360.jpg',
+  'item_link': 'https://www.cbsnews.com/video/us-to-increase-its-military-presence-in-europe/',
+  'item_pubdate': '2022-06-29 22:12:47',
+  'item_title': 'U.S. to increase its military presence in Europe',
+  'rss_url': 'https://test_url.com/xml'}]

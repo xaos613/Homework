@@ -1,0 +1,11 @@
+[{'channel_link': 'https://www.nytimes.com',
+  'channel_title': 'NYT > Top Stories',
+  'item_description': 'A reluctance by some liberal district attorneys to '
+                      'bring criminal charges against abortion providers is '
+                      'already complicating the legal landscape in some '
+                      'states.',
+  'item_image': 'https://static01.nyt.com/images/2022/06/29/us/29abortion-enforcement03/29abortion-enforcement03-moth.jpg',
+  'item_link': 'https://www.nytimes.com/2022/06/29/us/abortion-enforcement-prosecutors.html',
+  'item_pubdate': '2022-06-29 21:41:55',
+  'item_title': 'In States Banning Abortion, a Growing Rift Over Enforcement',
+  'rss_url': 'https://test_url.com/xml'}]

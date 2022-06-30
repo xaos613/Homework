@@ -5,7 +5,7 @@ with open("requirements.txt", encoding="utf-8") as file:
 
 setup(
     name='rss_reader',
-    version='1.2',
+    version='1.4',
     author='Dmitry Sholomitski',
     author_email='xaos613@gmail.com',
     license='BSD_setup.py',
@@ -13,13 +13,15 @@ setup(
     py_modules=["rss_reader"],
     long_description='RSS parser using Python v3.10',
     packages=find_packages(),
+    package_data={
+        '': ['*.ttf'],
+    },
 
-    install_requires=[requirements],
+    install_requires=requirements,
     python_requires='>=3.10',
     classifiers=[
-        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Operating System :: OS Independent",
     ],
     entry_points={"console_scripts": ["rss_reader=rss_reader.rss_reader:main"]}
 )
-

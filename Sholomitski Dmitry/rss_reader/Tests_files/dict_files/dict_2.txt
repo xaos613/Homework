@@ -1,0 +1,18 @@
+[{'channel_link': 'https://news.google.com/?hl=en-US=US=US:en',
+  'channel_title': 'Top stories - Google News',
+  'item_description': 'Liz Cheney Calls Trump ‘a Domestic Threat That We Have '
+                      'Never Faced Before’The New York TimesLiz Cheney says US '
+                      "is 'confronting a domestic threat' in Donald "
+                      'TrumpCNNOpinion | Trump wanted loyalty above all. He '
+                      'got just the opposite.The Washington PostMSNBC’s '
+                      "Nicolle Wallace says Liz Cheney is targeting 'Trumpism' "
+                      'like her father targeted terrorism after 9/11Fox '
+                      'NewsRepublicans must choose Trump or the Constitution, '
+                      "Liz Cheney warns, describing 'threat' like no otherABC "
+                      'News',
+  'item_image': 'image is not provided',
+  'item_link': 'https://news.google.com/__i/rss/rd/articles/CBMiS2h0dHBzOi8vd3d3Lm55dGltZXMuY29tLzIwMjIvMDYvMjkvdXMvcG9saXRpY3MvbGl6LWNoZW5leS1zcGVlY2gtdHJ1bXAuaHRtbNIBAA?oc=5',
+  'item_pubdate': '2022-06-30 03:02:32',
+  'item_title': 'Liz Cheney Calls Trump ‘a Domestic Threat That We Have Never '
+                'Faced Before’ - The New York Times',
+  'rss_url': 'https://test_url.com/xml'}]

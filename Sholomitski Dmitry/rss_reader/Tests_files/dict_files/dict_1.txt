@@ -1,0 +1,8 @@
+[{'channel_link': 'https://www.yahoo.com/news',
+  'channel_title': 'Yahoo News - Latest News  Headlines',
+  'item_description': 'Description not provided',
+  'item_image': 'https://s.yimg.com/uu/api/res/1.2/Kn3F_gIJwe0a3uIOU.Tb2w--~B/aD0yMzgxO3c9MzU3MTthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/ap.org/4a35cff443aaabc2b49d94a5e7672369',
+  'item_link': 'https://news.yahoo.com/spit-disrespect-arrive-wimbledon-tennis-220151441.html',
+  'item_pubdate': '2022-06-28 22:01:51',
+  'item_title': "Spit, 'disrespect' arrive at Wimbledon as tennis turns ugly",
+  'rss_url': 'https://test_url.com/xml'}]
