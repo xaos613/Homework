@@ -9,6 +9,8 @@ from urllib.parse import urlparse
 
 import requests
 from bs4 import BeautifulSoup
+from colorama import Fore, Style
+from pygments import highlight, lexers, formatters
 from dateparser import parse
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -26,17 +28,16 @@ class RSSParser:
 
     def __init__(self, settings):
         self.settings = settings
+
         self.rss_content = self.url_request(settings['source'])
         self.list_of_items = self.parser(self.rss_content)
         self.items_for_print = sorted(self.list_of_items, key=lambda x: x['item_pubdate'], reverse=True)[
                                :settings['limit']]
 
         if self.settings['json']:
-            RSSParser.json_print(self.items_for_print)
+            RSSParser.json_print(self.items_for_print, self.settings['color'])
         else:
-            RSSParser.rss_print(self.items_for_print)
-
-
+            RSSParser.rss_print(self.items_for_print, self.settings['color'])
 
         if self.settings['pdf']:
             self.save_to_pdf(self.items_for_print, settings['pdf'])
@@ -57,12 +58,10 @@ class RSSParser:
             return checked_path
         else:
             try:
-                checked_path = os.path.join(os.path.dirname(__file__), checked_path)
                 os.makedirs(checked_path)
                 return checked_path
 
             except OSError:
-                print("Invalid path.. Saving to the project default dir")
                 return os.path.dirname(__file__)
 
     @staticmethod
@@ -89,17 +88,25 @@ class RSSParser:
             pickle.dump(archive, pkl)
 
     @staticmethod
-    def convert_to_text_format(dict_for_print: dict):
+    def print_to_text_format(dict_for_print: dict, color):
         """
         Print all the attributes of a news item
         :param dict_for_print: Dictionary of news attributes
         :return: print parametres
         """
-        print(f"Title: {dict_for_print['item_title']}")
-        print(f"Description: {dict_for_print['item_description']}")
-        print(f"Published: {dict_for_print['item_pubdate']}")
-        print(f"Image: {dict_for_print['item_image']}")
-        print(f"Read more: {dict_for_print['item_link']}")
+        if color:
+
+            print(Fore.RED, f"Title: {dict_for_print['item_title']}")
+            print(Fore.LIGHTWHITE_EX, f"Description: {dict_for_print['item_description']}")
+            print(Fore.MAGENTA, f"Published: {dict_for_print['item_pubdate']}")
+            print(Fore.YELLOW, f"Image: {dict_for_print['item_image']}")
+            print(Fore.LIGHTBLUE_EX, f"Read more: {dict_for_print['item_link']}",Style.RESET_ALL)
+        else:
+            print(f"Title: {dict_for_print['item_title']}")
+            print(f"Description: {dict_for_print['item_description']}")
+            print(f"Published: {dict_for_print['item_pubdate']}")
+            print(f"Image: {dict_for_print['item_image']}")
+            print(f"Read more: {dict_for_print['item_link']}")
 
     @staticmethod
     def time_parser(date):
@@ -242,7 +249,7 @@ class RSSParser:
         return list_of_items
 
     @staticmethod
-    def rss_print(items_for_print):
+    def rss_print(items_for_print, color=False):
         """
 
         :param items_for_print: list of news items to print
@@ -256,22 +263,31 @@ class RSSParser:
             if items_for_print[number_item]['channel_title'] != items_for_print[number_item - 1]['channel_title']:
                 print_header = True
             if print_header:
-                print('channel title: ', items_for_print[number_item]['channel_title'])
-                print('channel link: ', items_for_print[number_item]['channel_link'])
-                print('*' * 120)
+                if color:
+                    print(Fore.YELLOW, 'channel title: ', items_for_print[number_item]['channel_title'])
+                    print(Fore.YELLOW, 'channel link: ', items_for_print[number_item]['channel_link'])
+                    print(Fore.BLUE, '*' * 120, Style.RESET_ALL)
+                else:
+                    print('channel title: ', items_for_print[number_item]['channel_title'])
+                    print('channel link: ', items_for_print[number_item]['channel_link'])
+                    print('*' * 120)
                 print_header = False
-            RSSParser.convert_to_text_format(items_for_print[number_item])
+            RSSParser.print_to_text_format(items_for_print[number_item], color)
             print('-' * 120)
 
     @staticmethod
-    def json_print(items_for_print):
+    def json_print(items_for_print, color=False):
         """
         :param items_for_print: list of dictionaries of news items to print
         :return: print news items  in stdout in json format
         """
         for item in items_for_print:
             json_formatted_text = json.dumps(item, indent=4, ensure_ascii=False)
-            print(json_formatted_text)
+            if color:
+                colored_json = highlight(json_formatted_text, lexers.JsonLexer(), formatters.TerminalFormatter())
+                print(colored_json)
+            else:
+                print(json_formatted_text)
 
     def save_to_html(self, items_for_print, path_to_save=''):
 
@@ -280,8 +296,6 @@ class RSSParser:
         :param items_for_print: items_for_print: list of dictionaries of news items
         :return: save in HTML page
         """
-
-
 
         html_content = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n' \
                        '<title>Formatted RSS News</title>\n<style>\n' \
@@ -330,7 +344,6 @@ class RSSParser:
             output.write(html_content)
             print(f'Your result saved to {path_to_file}')
 
-
             output.close()
         return html_content
 
@@ -367,6 +380,7 @@ class RSSarchive(RSSParser):
     def __init__(self, settings):
         archive_path = os.getcwd() + '/.archive.pkl'
         self.settings = settings
+        color = settings['color']
         archive = RSSarchive.getarchive(archive_path)
 
         try:
@@ -377,9 +391,9 @@ class RSSarchive(RSSParser):
             items_for_print = sorted(list_from_archive, key=lambda x: x['item_pubdate'])[:settings['limit']]
 
             if settings['json']:
-                RSSParser.json_print(items_for_print)
+                RSSParser.json_print(items_for_print, color)
             else:
-                RSSParser.rss_print(items_for_print)
+                RSSParser.rss_print(items_for_print, color)
 
             if self.settings['pdf']:
                 self.save_to_pdf(items_for_print)
@@ -442,8 +456,10 @@ def main():
 
 
 if __name__ == '__main__':
-    # main()
+
     try:
         main()
     except Exception as e:
         print(f'Something goes wrong: {e}')
+
+

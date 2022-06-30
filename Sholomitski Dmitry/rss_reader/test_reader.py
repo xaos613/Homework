@@ -14,7 +14,8 @@ class TestRSSParser(TestCase):
         'source': 'https://test_url.com/xml',
         'date': None,
         'html': False,
-        'pdf': False
+        'pdf': False,
+        'color': False
     }
 
     def test_process_string(self):

@@ -12,7 +12,7 @@ def get_args(args=None):
     parser.add_argument('--json', action='store_true', default=False, help='Save result as in JSON file')
     parser.add_argument('--limit', type=int, default=None, help='Limit news if this parameter provided')
     parser.add_argument('-v', '--verbose', action='store_true', default=False, help="Output verbose messages")
-
+    parser.add_argument("--colorize", help="Enables colored output mode", action="store_true", default=False)
     parser.add_argument('--date', type=str, help='Gets a date in YYYYMMDD format. Print news from the specified date.')
 
     parser.add_argument('--to-html', nargs='?', const=f"{default_path}", action="store",
@@ -35,6 +35,7 @@ def check_args(args=None):
         'pdf': args.to_pdf if args.to_pdf else False,
         'html': args.to_html if args.to_html else False,
         'source': args.source if args.source else None,
+        'color':True if args.colorize else False
     }
 
 
