@@ -88,7 +88,6 @@ class TestRSSParser(TestCase):
         self.assertEqual(archive_parser['date'], '20220606')
         self.assertTrue(archive_parser['pdf'])
         self.assertTrue(archive_parser['html'])
-        self.assertEqual(archive_parser['path'], 'source')
 
     @patch.object(RSSParser, 'url_request')
     def test_parser_mock(self, mock_url_request):
@@ -162,7 +161,7 @@ class TestRSSParser(TestCase):
 
     def test_save_to_html(self):
         with open('Tests_files/dict_for_print.txt') as dict_1, open('Tests_files/html_file.html') as res_file1:
-            html_content = RSSParser.save_to_html(self, eval(dict_1.read()))
+            html_content = RSSParser.save_to_html(self, eval(dict_1.read()), None)
 
             self.assertEqual(html_content, res_file1.read())
 

@@ -36,10 +36,34 @@ class RSSParser:
         else:
             RSSParser.rss_print(self.items_for_print)
 
+
+
         if self.settings['pdf']:
-            self.save_to_pdf(self.items_for_print)
+            self.save_to_pdf(self.items_for_print, settings['pdf'])
         if self.settings['html']:
-            self.save_to_html(self.items_for_print)
+            self.save_to_html(self.items_for_print, settings['html'])
+
+    @staticmethod
+    def valid_path(checked_path):
+        """
+        funktion checks if passed into function path exists and tries to create it if it doesn't.
+        If path exists  or is created successfully, method returns given path,
+        else - returns default path value for saving files.
+        :param path: path to check
+        :return: path for saving files
+        """
+        breakpoint()
+
+        if os.path.exists(checked_path):
+            return checked_path
+        else:
+            try:
+                os.makedirs(checked_path)
+                return checked_path
+
+            except OSError:
+                print("Invalid path.. Saving to the project default dir")
+                return os.path.dirname(__file__)
 
     @staticmethod
     def load_to_archive(new_from_reader):
@@ -249,7 +273,8 @@ class RSSParser:
             json_formatted_text = json.dumps(item, indent=4, ensure_ascii=False)
             print(json_formatted_text)
 
-    def save_to_html(self, items_for_print):
+    def save_to_html(self, items_for_print, path_to_save=''):
+
         """
         saves the needed news to an HTML page
         :param items_for_print: items_for_print: list of dictionaries of news items
@@ -298,12 +323,14 @@ class RSSParser:
             <h4><a href=\"{items_for_print[number_item]['item_link']}\">Read more</a></h4></div></div>\n</br>"""
         html_content += '</body></html>'
         if self.settings['html']:
-            output = open("export.html", "w", encoding='utf-8')
+            breakpoint()
+            path_to_save = RSSParser.valid_path(path_to_save)
+            output = open(os.path.join(path_to_save, "export.html"), "w", encoding='utf-8')
             output.write(html_content)
             output.close()
         return html_content
 
-    def save_to_pdf(self, items_for_print):
+    def save_to_pdf(self, items_for_print, path_to_save=''):
         """
 
         saves the needed news to an PDF file (with using save_to_html funktion makes html and convert to PDF file)
@@ -311,7 +338,9 @@ class RSSParser:
         :return: convert HTML to PDF
         """
         # open output file for writing (truncated binary)
-        with open('export.pdf', "w+b") as result_file:
+
+        path_to_save = RSSParser.valid_path(path_to_save)
+        with open(os.path.join(path_to_save, 'export.pdf'), "w+b") as result_file:
             font_path = os.path.dirname(__file__) + r'/Fonts/calibri.ttf'
             pdfmetrics.registerFont(TTFont('Calibri', font_path))
             DEFAULT_FONT["helvetica"] = "Calibri"
@@ -406,7 +435,7 @@ def main():
 
 
 if __name__ == '__main__':
-
+    # main()
     try:
         main()
     except Exception as e:
