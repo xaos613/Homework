@@ -52,7 +52,6 @@ class RSSParser:
         :param path: path to check
         :return: path for saving files
         """
-        breakpoint()
 
         if os.path.exists(checked_path):
             return checked_path
@@ -323,7 +322,6 @@ class RSSParser:
             <h4><a href=\"{items_for_print[number_item]['item_link']}\">Read more</a></h4></div></div>\n</br>"""
         html_content += '</body></html>'
         if self.settings['html']:
-            breakpoint()
             path_to_save = RSSParser.valid_path(path_to_save)
             output = open(os.path.join(path_to_save, "export.html"), "w", encoding='utf-8')
             output.write(html_content)
